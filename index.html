@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flag Football Coach Pro</title>
-  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/react.production.min.js"></script>
-  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -16,1129 +13,418 @@
       background: #fafafa;
       color: #333;
     }
-    #root { min-height: 100vh; }
-    .rating-stars { display: flex; gap: 4px; cursor: pointer; }
-    .star { font-size: 20px; color: #ddd; cursor: pointer; }
-    .star.filled { color: #ffc107; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+    h1 { margin: 0 0 16px 0; font-size: 32px; font-weight: 700; }
+    h2 { font-size: 24px; font-weight: 600; margin-bottom: 20px; margin-top: 0; }
+    h3 { font-size: 16px; font-weight: 600; margin: 0 0 12px 0; }
+    .header { margin-bottom: 24px; border-bottom: 1px solid #ddd; padding-bottom: 16px; }
+    .team-buttons { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .team-btn { padding: 10px 16px; border: 0.5px solid #ccc; border-radius: 6px; background: white; color: #333; cursor: pointer; font-weight: 500; font-size: 14px; }
+    .team-btn.active { border: 2px solid #333; background: #333; color: white; }
+    .tab-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+    .tab-btn { padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 4px; background: #f5f5f5; color: #333; cursor: pointer; font-size: 12px; font-weight: 400; }
+    .tab-btn.active { border: 1px solid #333; background: #333; color: white; font-weight: 600; }
+    .view { display: none; }
+    .view.active { display: block; }
+    .form-group { display: grid; gap: 8px; margin-bottom: 12px; }
+    .input, select, textarea { padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
+    textarea { min-height: 100px; resize: vertical; }
+    .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .btn-primary { background: #333; color: white; }
+    .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-danger { background: none; border: 0.5px solid #ccc; color: #d00; font-size: 12px; padding: 4px 8px; }
+    .card { background: white; padding: 16px; border-radius: 8px; border: 0.5px solid #ddd; margin-bottom: 12px; }
+    .stat-card { padding: 16px; background: white; border: 0.5px solid #ddd; border-radius: 8px; text-align: center; }
+    .stat-label { font-size: 12px; color: #999; margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 700; color: #333; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .player-list { display: grid; gap: 8px; }
+    .player-item { padding: 16px; background: white; border: 0.5px solid #ddd; border-radius: 6px; display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px; align-items: center; }
+    .player-name { font-weight: 600; font-size: 15px; }
+    .player-pos { font-size: 12px; color: #999; }
+    .stat-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; font-size: 12px; }
+    .eval-section { margin-bottom: 24px; }
+    .star-rating { display: flex; gap: 4px; }
+    .star-btn { width: 32px; height: 32px; border: 0.5px solid #ccc; border-radius: 4px; background: #f5f5f5; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .star-btn.filled { background: #ffc107; }
+    .empty-state { text-align: center; padding: 40px; color: #999; background: white; border-radius: 8px; border: 0.5px solid #ddd; }
+    @media (max-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .player-item { grid-template-columns: 1fr; }
+      .stat-inputs { grid-template-columns: repeat(2, 1fr); }
+      .tab-buttons { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 12px; }
+      h1 { font-size: 24px; margin-bottom: 12px; }
+      h2 { font-size: 18px; }
+      .stat-inputs { grid-template-columns: 1fr; }
+      .stat-card { padding: 12px; }
+      .stat-value { font-size: 24px; }
+      .player-name { font-size: 14px; }
+      .btn { padding: 6px 12px; font-size: 12px; }
+    }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div class="container">
+    <div class="header">
+      <h1>🏈  Flag Football Coach Pro</h1>
+      <div class="team-buttons">
+        <button class="team-btn active" data-team="5-6">5/6 Division</button>
+        <button class="team-btn" data-team="7-8">7/8 Division</button>
+      </div>
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-view="home">📊  Dashboard</button>
+        <button class="tab-btn" data-view="roster">👥  Roster</button>
+        <button class="tab-btn" data-view="evals">⭐  Evals</button>
+        <button class="tab-btn" data-view="practice">📋  Practices</button>
+        <button class="tab-btn" data-view="playbook">📖  Playbook</button>
+        <button class="tab-btn" data-view="formations">📐  Formations</button>
+        <button class="tab-btn" data-view="gameday">🎮  Game Day</button>
+      </div>
+    </div>
 
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+    <div id="home" class="view active"></div>
+    <div id="roster" class="view"></div>
+    <div id="evals" class="view"></div>
+    <div id="practice" class="view"></div>
+    <div id="playbook" class="view"></div>
+    <div id="formations" class="view"></div>
+    <div id="gameday" class="view"></div>
+  </div>
 
-    const FootballAppPro = () => {
-      const [activeTeam, setActiveTeam] = useState('5-6');
-      const [view, setView] = useState('home');
-      const [data, setData] = useState({
-        teams: {
-          '5-6': { name: '5/6 Division', players: [], practices: [], playbook: [], games: [], evals: {} },
-          '7-8': { name: '7/8 Division', players: [], practices: [], playbook: [], games: [], evals: {} }
-        }
+  <script>
+    let activeTeam = '5-6';
+    let activeView = 'home';
+    let appData = {
+      teams: {
+        '5-6': { name: '5/6 Division', players: [], practices: [], playbook: [], games: [], evals: {} },
+        '7-8': { name: '7/8 Division', players: [], practices: [], playbook: [], games: [], evals: {} }
+      }
+    };
+
+    function init() {
+      loadData();
+      setupEventListeners();
+      renderView();
+    }
+
+    function loadData() {
+      const saved = localStorage.getItem('football-coach-pro');
+      if (saved) appData = JSON.parse(saved);
+    }
+
+    function saveData() {
+      localStorage.setItem('football-coach-pro', JSON.stringify(appData));
+    }
+
+    function setupEventListeners() {
+      document.querySelectorAll('.team-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          activeTeam = e.target.dataset.team;
+          document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          renderView();
+        });
       });
 
-      useEffect(() => {
-        loadData();
-      }, []);
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          activeView = e.target.dataset.view;
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          renderView();
+        });
+      });
+    }
 
-      const loadData = () => {
-        const saved = localStorage.getItem('football-coach-pro');
-        if (saved) {
-          setData(JSON.parse(saved));
-        }
-      };
+    function renderView() {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const viewEl = document.getElementById(activeView);
+      viewEl.classList.add('active');
 
-      const saveData = (newData) => {
-        setData(newData);
-        localStorage.setItem('football-coach-pro', JSON.stringify(newData));
-      };
+      if (activeView === 'home') renderHome();
+      else if (activeView === 'roster') renderRoster();
+      else if (activeView === 'evals') renderEvals();
+      else if (activeView === 'practice') renderPractice();
+      else if (activeView === 'playbook') renderPlaybook();
+      else if (activeView === 'formations') renderFormations();
+      else if (activeView === 'gameday') renderGameDay();
+    }
 
-      const currentTeam = data.teams[activeTeam];
-
-      return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px' }}>
-          <div style={{ marginBottom: '24px', borderBottom: '1px solid #ddd', paddingBottom: '16px' }}>
-            <h1 style={{ margin: '0 0 16px 0', fontSize: '32px', fontWeight: '700' }}>🏈  Flag Football Coach Pro</h1>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
-              {Object.entries(data.teams).map(([key, team]) => (
-                <button
-                  key={key}
-                  onClick={() => setActiveTeam(key)}
-                  style={{
-                    padding: '10px 16px',
-                    border: activeTeam === key ? '2px solid #333' : '0.5px solid #ccc',
-                    borderRadius: '6px',
-                    background: activeTeam === key ? '#333' : 'white',
-                    color: activeTeam === key ? 'white' : '#333',
-                    cursor: 'pointer',
-                    fontWeight: '500',
-                    fontSize: '14px'
-                  }}
-                >
-                  {team.name}
-                </button>
-              ))}
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '8px' }}>
-              {[
-                { id: 'home', label: 'Dashboard', icon: '📊' },
-                { id: 'roster', label: 'Roster', icon: '👥' },
-                { id: 'evals', label: 'Evaluations', icon: '⭐' },
-                { id: 'practice', label: 'Practices', icon: '📋' },
-                { id: 'playbook', label: 'Playbook', icon: '📖' },
-                { id: 'formations', label: 'Formations', icon: '📐' },
-                { id: 'gameday', label: 'Game Day', icon: '🎮' }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setView(tab.id)}
-                  style={{
-                    padding: '8px 12px',
-                    border: view === tab.id ? '1px solid #333' : '0.5px solid #ccc',
-                    borderRadius: '4px',
-                    background: view === tab.id ? '#333' : '#f5f5f5',
-                    color: view === tab.id ? 'white' : '#333',
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                    fontWeight: view === tab.id ? '600' : '400'
-                  }}
-                >
-                  {tab.icon}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {view === 'home' && <DashboardView team={currentTeam} teamKey={activeTeam} data={data} />}
-          {view === 'roster' && <RosterView team={currentTeam} teamKey={activeTeam} onUpdate={saveData} data={data} />}
-          {view === 'evals' && <EvalsView team={currentTeam} teamKey={activeTeam} onUpdate={saveData} data={data} />}
-          {view === 'practice' && <PracticeView team={currentTeam} teamKey={activeTeam} onUpdate={saveData} data={data} />}
-          {view === 'playbook' && <PlaybookView team={currentTeam} teamKey={activeTeam} onUpdate={saveData} data={data} />}
-          {view === 'formations' && <FormationsView team={currentTeam} />}
-          {view === 'gameday' && <GameDayView team={currentTeam} teamKey={activeTeam} onUpdate={saveData} data={data} />}
-        </div>
-      );
-    };
-
-    const DashboardView = ({ team, teamKey, data }) => {
-      const avgPlayerRating = team.players.length > 0
-        ? (team.players.reduce((sum, p) => sum + (data.teams[teamKey].evals[p.id]?.overall || 0), 0) / team.players.length).toFixed(1)
+    function renderHome() {
+      const team = appData.teams[activeTeam];
+      const avgRating = team.players.length > 0
+        ? (team.players.reduce((sum, p) => sum + (appData.teams[activeTeam].evals[p.id]?.overall || 0), 0) / team.players.length).toFixed(1)
         : 0;
 
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Team Dashboard: {team.name}</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-            <StatCard label="Players" value={team.players.length} />
-            <StatCard label="Avg Rating" value={avgPlayerRating} />
-            <StatCard label="Practice Plans" value={team.practices.length} />
-            <StatCard label="Playbook Plays" value={team.playbook.length} />
-            <StatCard label="Games Tracked" value={team.games.length} />
+      let html = `<h2>Team Dashboard: ${team.name}</h2>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Players</div><div class="stat-value">${team.players.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Avg Rating</div><div class="stat-value">${avgRating}</div></div>
+          <div class="stat-card"><div class="stat-label">Practice Plans</div><div class="stat-value">${team.practices.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Playbook Plays</div><div class="stat-value">${team.playbook.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Games Tracked</div><div class="stat-value">${team.games.length}</div></div>
+        </div>`;
+
+      if (team.players.length > 0) {
+        const topPlayers = team.players
+          .map(p => ({ ...p, rating: appData.teams[activeTeam].evals[p.id]?.overall || 0 }))
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 5);
+
+        html += `<div class="grid-2">
+          <div class="card"><h3>Quick Actions</h3>
+            <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 2;">
+              <li>Add players to roster</li>
+              <li>Rate players with skill evaluations</li>
+              <li>Create practice plans</li>
+              <li>Build your playbook</li>
+              <li>Track game substitutions</li>
+            </ul>
           </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-              <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600' }}>Quick Actions</h3>
-              <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', lineHeight: '2' }}>
-                <li>Add players to roster</li>
-                <li>Rate players with skill evaluations</li>
-                <li>Create or use pre-made practice plans</li>
-                <li>Build your playbook by formations</li>
-                <li>Track substitutions on game day</li>
-              </ul>
-            </div>
-
-            {team.players.length > 0 && (
-              <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-                <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600' }}>Top Rated Players</h3>
-                <div style={{ display: 'grid', gap: '8px', fontSize: '13px' }}>
-                  {team.players
-                    .map(p => ({ ...p, rating: data.teams[teamKey].evals[p.id]?.overall || 0 }))
-                    .sort((a, b) => b.rating - a.rating)
-                    .slice(0, 5)
-                    .map(p => (
-                      <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '6px', borderBottom: '0.5px solid #eee' }}>
-                        <span>#{p.number}  {p.name}</span>
-                        <span style={{ fontWeight: '600', color: '#333' }}>⭐  {p.rating.toFixed(1)}</span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
+          <div class="card"><h3>Top Rated Players</h3>
+            ${topPlayers.map(p => `<div style="display: flex; justify-content: space-between; padding-bottom: 6px; border-bottom: 0.5px solid #eee; font-size: 13px;">
+              <span>#${p.number}  ${p.name}</span>
+              <span style="font-weight: 600;">⭐  ${p.rating.toFixed(1)}</span>
+            </div>`).join('')}
           </div>
-        </div>
-      );
-    };
-
-    const StatCard = ({ label, value }) => (
-      <div style={{ padding: '16px', backgroundColor: 'white', border: '0.5px solid #ddd', borderRadius: '8px', textAlign: 'center' }}>
-        <div style={{ fontSize: '12px', color: '#999', marginBottom: '8px' }}>{label}</div>
-        <div style={{ fontSize: '32px', fontWeight: '700', color: '#333' }}>{value}</div>
-      </div>
-    );
-
-    const RosterView = ({ team, teamKey, onUpdate, data }) => {
-      const [name, setName] = useState('');
-      const [number, setNumber] = useState('');
-      const [position, setPosition] = useState('WR');
-      const [editingId, setEditingId] = useState(null);
-      const [editName, setEditName] = useState('');
-
-      const addPlayer = () => {
-        if (name.trim()) {
-          const newData = { ...data };
-          newData.teams[teamKey].players.push({
-            id: Date.now(),
-            name: name.trim(),
-            number: number || '0',
-            position,
-            stats: { played: 0, touchdowns: 0, touches: 0, defensiveStops: 0 }
-          });
-          onUpdate(newData);
-          setName('');
-          setNumber('');
-        }
-      };
-
-      const removePlayer = (id) => {
-        const newData = { ...data };
-        newData.teams[teamKey].players = newData.teams[teamKey].players.filter(p => p.id !== id);
-        onUpdate(newData);
-      };
-
-      const updatePlayer = (id, updates) => {
-        const newData = { ...data };
-        const player = newData.teams[teamKey].players.find(p => p.id === id);
-        if (player) {
-          Object.assign(player, updates);
-          onUpdate(newData);
-        }
-      };
-
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Manage Roster</h2>
-
-          <div style={{ backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '0.5px solid #ddd' }}>
-            <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Add New Player</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', marginBottom: '12px' }}>
-              <input
-                type="text"
-                placeholder="Player name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{ padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}
-              />
-              <input
-                type="text"
-                placeholder="Jersey #"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
-                style={{ padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}
-              />
-              <select
-                value={position}
-                onChange={(e) => setPosition(e.target.value)}
-                style={{ padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}
-              >
-                <option>WR</option>
-                <option>QB</option>
-                <option>RB</option>
-                <option>DEF</option>
-              </select>
-              <button
-                onClick={addPlayer}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#333',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}
-              >
-                Add Player
-              </button>
-            </div>
-          </div>
-
-          {team.players.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px', color: '#999', backgroundColor: 'white', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-              No players yet.  Add your first player above.
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gap: '8px' }}>
-              {team.players.map(player => (
-                <div
-                  key={player.id}
-                  style={{
-                    padding: '16px',
-                    backgroundColor: 'white',
-                    border: '0.5px solid #ddd',
-                    borderRadius: '6px',
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr auto',
-                    gap: '16px',
-                    alignItems: 'center'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: '600', fontSize: '15px' }}>#{player.number}  {player.name}</div>
-                    <div style={{ fontSize: '12px', color: '#999' }}>Position: {player.position}</div>
-                  </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', fontSize: '12px' }}>
-                    <div>
-                      <div style={{ color: '#999', marginBottom: '4px' }}>Touches</div>
-                      <input
-                        type="number"
-                        value={player.stats?.touches || 0}
-                        onChange={(e) => updatePlayer(player.id, { stats: { ...player.stats, touches: parseInt(e.target.value) || 0 } })}
-                        style={{ width: '100%', padding: '4px', border: '0.5px solid #ccc', borderRadius: '3px', fontSize: '12px' }}
-                      />
-                    </div>
-                    <div>
-                      <div style={{ color: '#999', marginBottom: '4px' }}>TDs</div>
-                      <input
-                        type="number"
-                        value={player.stats?.touchdowns || 0}
-                        onChange={(e) => updatePlayer(player.id, { stats: { ...player.stats, touchdowns: parseInt(e.target.value) || 0 } })}
-                        style={{ width: '100%', padding: '4px', border: '0.5px solid #ccc', borderRadius: '3px', fontSize: '12px' }}
-                      />
-                    </div>
-                    <div>
-                      <div style={{ color: '#999', marginBottom: '4px' }}>DEF</div>
-                      <input
-                        type="number"
-                        value={player.stats?.defensiveStops || 0}
-                        onChange={(e) => updatePlayer(player.id, { stats: { ...player.stats, defensiveStops: parseInt(e.target.value) || 0 } })}
-                        style={{ width: '100%', padding: '4px', border: '0.5px solid #ccc', borderRadius: '3px', fontSize: '12px' }}
-                      />
-                    </div>
-                    <div>
-                      <div style={{ color: '#999', marginBottom: '4px' }}>Games</div>
-                      <input
-                        type="number"
-                        value={player.stats?.played || 0}
-                        onChange={(e) => updatePlayer(player.id, { stats: { ...player.stats, played: parseInt(e.target.value) || 0 } })}
-                        style={{ width: '100%', padding: '4px', border: '0.5px solid #ccc', borderRadius: '3px', fontSize: '12px' }}
-                      />
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => removePlayer(player.id)}
-                    style={{
-                      padding: '4px 8px',
-                      border: '0.5px solid #ccc',
-                      background: '#fff',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      color: '#d00'
-                    }}
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    };
-
-    const EvalsView = ({ team, teamKey, onUpdate, data }) => {
-      const [selectedPlayer, setSelectedPlayer] = useState(team.players[0]?.id || null);
-      const evals = data.teams[teamKey].evals || {};
-      const playerEval = selectedPlayer ? evals[selectedPlayer] || {} : {};
-
-      const updateRating = (skill, value) => {
-        const newData = { ...data };
-        if (!newData.teams[teamKey].evals) newData.teams[teamKey].evals = {};
-        if (!newData.teams[teamKey].evals[selectedPlayer]) newData.teams[teamKey].evals[selectedPlayer] = {};
-        newData.teams[teamKey].evals[selectedPlayer][skill] = value;
-        
-        const skills = ['passing', 'receiving', 'running', 'defense', 'fieldAwareness', 'attitude'];
-        const ratings = skills.map(s => newData.teams[teamKey].evals[selectedPlayer][s] || 0);
-        newData.teams[teamKey].evals[selectedPlayer].overall = (ratings.reduce((a, b) => a + b, 0) / skills.length).toFixed(1);
-        onUpdate(newData);
-      };
-
-      const updateNotes = (notes) => {
-        const newData = { ...data };
-        if (!newData.teams[teamKey].evals) newData.teams[teamKey].evals = {};
-        if (!newData.teams[teamKey].evals[selectedPlayer]) newData.teams[teamKey].evals[selectedPlayer] = {};
-        newData.teams[teamKey].evals[selectedPlayer].notes = notes;
-        onUpdate(newData);
-      };
-
-      if (team.players.length === 0) {
-        return <div style={{ marginTop: '20px', color: '#999' }}>Add players first</div>;
+        </div>`;
       }
 
-      const currentPlayer = team.players.find(p => p.id === selectedPlayer);
+      document.getElementById('home').innerHTML = html;
+    }
 
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Player Evaluations</h2>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '16px' }}>
-            <div style={{ display: 'grid', gap: '6px' }}>
-              {team.players.map(player => (
-                <button
-                  key={player.id}
-                  onClick={() => setSelectedPlayer(player.id)}
-                  style={{
-                    padding: '8px 12px',
-                    border: selectedPlayer === player.id ? '2px solid #333' : '0.5px solid #ccc',
-                    borderRadius: '4px',
-                    background: selectedPlayer === player.id ? '#333' : 'white',
-                    color: selectedPlayer === player.id ? 'white' : '#333',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    fontWeight: selectedPlayer === player.id ? '600' : '400',
-                    textAlign: 'left'
-                  }}
-                >
-                  #{player.number}  {player.name}
-                </button>
-              ))}
-            </div>
-
-            {selectedPlayer && (
-              <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-                <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
-                  {currentPlayer.name}  <span style={{ color: '#ffc107', fontSize: '20px' }}>⭐  {playerEval.overall || 0}</span>
-                </h3>
-
-                <div style={{ display: 'grid', gap: '16px' }}>
-                  {[
-                    { skill: 'passing', label: 'Passing' },
-                    { skill: 'receiving', label: 'Receiving' },
-                    { skill: 'running', label: 'Running' },
-                    { skill: 'defense', label: 'Defense' },
-                    { skill: 'fieldAwareness', label: 'Field Awareness' },
-                    { skill: 'attitude', label: 'Attitude/Effort' }
-                  ].map(({ skill, label }) => (
-                    <div key={skill}>
-                      <label style={{ fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '6px' }}>
-                        {label}: {playerEval[skill] || 0}/5
-                      </label>
-                      <div style={{ display: 'flex', gap: '4px' }}>
-                        {[1, 2, 3, 4, 5].map(i => (
-                          <button
-                            key={i}
-                            onClick={() => updateRating(skill, i)}
-                            style={{
-                              width: '32px',
-                              height: '32px',
-                              border: playerEval[skill] === i ? '2px solid #333' : '0.5px solid #ccc',
-                              borderRadius: '4px',
-                              background: playerEval[skill] >= i ? '#ffc107' : '#f5f5f5',
-                              cursor: 'pointer',
-                              fontSize: '14px',
-                              fontWeight: '600'
-                            }}
-                          >
-                            ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-
-                  <div>
-                    <label style={{ fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '6px' }}>Notes</label>
-                    <textarea
-                      value={playerEval.notes || ''}
-                      onChange={(e) => updateNotes(e.target.value)}
-                      placeholder="Add coaching notes..."
-                      style={{
-                        width: '100%',
-                        padding: '8px 12px',
-                        border: '0.5px solid #ccc',
-                        borderRadius: '4px',
-                        fontSize: '13px',
-                        minHeight: '100px',
-                        fontFamily: 'inherit',
-                        resize: 'vertical'
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+    function renderRoster() {
+      const team = appData.teams[activeTeam];
+      let html = `<h2>Manage Roster</h2>
+        <div class="card" style="background: #f9f9f9;">
+          <h3>Add New Player</h3>
+          <div class="form-group" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+            <input type="text" id="playerName" class="input" placeholder="Player name">
+            <input type="text" id="playerNumber" class="input" placeholder="Jersey #">
+            <button class="btn btn-primary" onclick="addPlayer()">Add Player</button>
           </div>
-        </div>
-      );
-    };
+        </div>`;
 
-    const preBuiltPlans = {
-      '5-6': [
-        {
-          title: 'Week 1 - Foundations',
-          drills: [
-            { name: 'Teamwork', duration: 3 },
-            { name: 'Straight Leg March', duration: 5 },
-            { name: 'Skipping', duration: 5 },
-            { name: 'My Gears', duration: 6 },
-            { name: 'Log Roll Bonanza', duration: 3 },
-            { name: 'Meet in the Middle Grip Drill', duration: 3 },
-            { name: 'Catch and Step with Partner', duration: 4 },
-            { name: 'Hot Potato', duration: 4 },
-            { name: 'No Hands Get Up', duration: 1 },
-            { name: 'Position Tag', duration: 5 }
-          ]
-        },
-        {
-          title: 'Week 2 - Running & Receiving',
-          drills: [
-            { name: 'Teamwork', duration: 3 },
-            { name: 'Walking Knee Hugs', duration: 5 },
-            { name: 'Hops Forward/Backward', duration: 5 },
-            { name: 'Gear Runs', duration: 6 },
-            { name: 'Position Tag', duration: 4 },
-            { name: 'Zig-zag Pathway', duration: 5 },
-            { name: 'Hot Potato', duration: 4 },
-            { name: 'Snake Run', duration: 5 },
-            { name: 'Multi-Directional Get Up and Go', duration: 2 },
-            { name: 'Learning to Fall Forward/Backward', duration: 4 }
-          ]
-        },
-        {
-          title: 'Week 3 - Kicking & Fundamentals',
-          drills: [
-            { name: 'Teamwork', duration: 3 },
-            { name: 'Lateral Shuffle', duration: 5 },
-            { name: 'Backwards Run', duration: 5 },
-            { name: 'Gallops', duration: 6 },
-            { name: 'Scatter Run', duration: 3 },
-            { name: 'Balance Kicks', duration: 5 },
-            { name: 'Partner Kicks', duration: 5 },
-            { name: 'Partner Punts', duration: 4 },
-            { name: 'Bear Crawl', duration: 3 },
-            { name: 'Log Rolls', duration: 3 }
-          ]
-        },
-        {
-          title: 'Week 4 - Offensive Skills',
-          drills: [
-            { name: 'Teamwork', duration: 3 },
-            { name: 'High Knees', duration: 5 },
-            { name: 'Butt Kicks', duration: 5 },
-            { name: 'Gear Runs', duration: 7 },
-            { name: 'My Gears', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 3 },
-            { name: 'Partner Step and Throw', duration: 4 },
-            { name: 'Throw and Catch Relay', duration: 5 },
-            { name: 'Position Tag', duration: 5 },
-            { name: 'Sharks and Minnows', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 5 - Defensive Drills',
-          drills: [
-            { name: 'Teamwork', duration: 3 },
-            { name: 'Skip and March', duration: 5 },
-            { name: 'Carioca', duration: 5 },
-            { name: 'Partner Mirror Drill', duration: 5 },
-            { name: 'Log Roll Bonanza', duration: 3 },
-            { name: 'Snake Run', duration: 5 },
-            { name: 'Catch and Step with Partner', duration: 4 },
-            { name: 'Tag Games', duration: 5 },
-            { name: 'Learning to Fall Forward/Backward', duration: 4 },
-            { name: 'Position Tag', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 6 - Integrated Offense',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Lateral Shuffle', duration: 5 },
-            { name: 'Jump and Land', duration: 6 },
-            { name: 'Scatter Run', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 3 },
-            { name: 'Throw and Catch Relay', duration: 4 },
-            { name: 'Hot Potato', duration: 4 },
-            { name: 'Zig-zag Pathway', duration: 5 },
-            { name: 'Sharks and Minnows', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 7 - Mid-Season Review',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'High Knees', duration: 5 },
-            { name: 'Bounds', duration: 5 },
-            { name: 'Racetrack', duration: 6 },
-            { name: 'Gear Runs', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 3 },
-            { name: 'Partner Step and Throw', duration: 4 },
-            { name: 'Snake Run', duration: 5 },
-            { name: 'Multi-Directional Get Up and Go', duration: 3 },
-            { name: 'Position Tag', duration: 5 }
-          ]
-        },
-        {
-          title: 'Week 8 - Contact & Tackling Skills',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Carioca', duration: 5 },
-            { name: 'Single-Leg Quad Stretch and Reach', duration: 5 },
-            { name: 'Log Roll Bonanza', duration: 6 },
-            { name: 'My Gears', duration: 5 },
-            { name: 'Hot Potato', duration: 4 },
-            { name: 'Throw and Catch Relay', duration: 4 },
-            { name: 'Animal Relay', duration: 4 },
-            { name: 'Learning to Fall Forward/Backward', duration: 4 },
-            { name: 'Tag Games', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 9 - Complex Patterns',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Walking Knee Hugs', duration: 5 },
-            { name: '180 Jumps', duration: 5 },
-            { name: 'Scatter Run', duration: 6 },
-            { name: 'Partner Mirror Drill', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 3 },
-            { name: 'Catch and Step with Partner', duration: 4 },
-            { name: 'Snake Run', duration: 5 },
-            { name: 'Sharks and Minnows', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 10 - Endurance & Pace',
-          drills: [
-            { name: 'Hydration Focus', duration: 5 },
-            { name: 'High Skies', duration: 5 },
-            { name: 'Arm Circles', duration: 5 },
-            { name: 'Gear Runs', duration: 6 },
-            { name: 'Position Tag', duration: 5 },
-            { name: 'Throw and Catch Relay', duration: 4 },
-            { name: 'Hot Potato', duration: 4 },
-            { name: 'Tag Games', duration: 5 },
-            { name: 'Multi-Directional Get Up and Go', duration: 3 },
-            { name: 'Sharks and Minnows', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 11 - Playoff Prep',
-          drills: [
-            { name: 'Leadership', duration: 5 },
-            { name: 'Single-Leg Quad Stretch and Reach', duration: 5 },
-            { name: 'Skipping', duration: 5 },
-            { name: 'Gear Runs', duration: 6 },
-            { name: 'My Gears', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 3 },
-            { name: 'Partner Step and Throw', duration: 4 },
-            { name: 'Zig-zag Pathway', duration: 5 },
-            { name: 'Tag Games', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 12 - Championship Focus',
-          drills: [
-            { name: 'Sportsmanship', duration: 5 },
-            { name: 'Straight Leg March', duration: 5 },
-            { name: 'High Knees', duration: 5 },
-            { name: 'Scatter Run', duration: 6 },
-            { name: 'Racetrack', duration: 5 },
-            { name: 'Horizontal L to Vertical L', duration: 3 },
-            { name: 'Clockwork Hands', duration: 4 },
-            { name: 'Hot Potato', duration: 5 },
-            { name: 'Ultimate Football', duration: 8 }
-          ]
-        }
-      ],
-      '7-8': [
-        {
-          title: 'Week 1 - Foundations',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Walking Knee Hugs', duration: 5 },
-            { name: 'Straight Leg March', duration: 5 },
-            { name: 'Partner Mirror Drill', duration: 5 },
-            { name: 'Log Roll Bonanza', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 2 },
-            { name: 'Partner Step and Throw', duration: 5 },
-            { name: 'Throw and Catch Relay', duration: 5 },
-            { name: 'Multi-Directional Get Up and Go', duration: 2 },
-            { name: 'Learning to Fall Forward/Backward', duration: 4 }
-          ]
-        },
-        {
-          title: 'Week 2 - Speed & Agility',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'High Skies', duration: 5 },
-            { name: 'Butt Kicks', duration: 5 },
-            { name: 'Racetrack', duration: 6 },
-            { name: 'Quick Feet Reaction', duration: 4 },
-            { name: 'Toss Drill', duration: 3 },
-            { name: 'Trunk Rotation Throws', duration: 3 },
-            { name: 'Zig-zag Pathway', duration: 5 },
-            { name: 'Acceleration Drills', duration: 5 }
-          ]
-        },
-        {
-          title: 'Week 3 - Kicking Technique',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Lateral Shuffle', duration: 5 },
-            { name: 'Single-Leg Quad Stretch and Reach', duration: 5 },
-            { name: 'Stop and Go Flow', duration: 5 },
-            { name: 'Blob Tag', duration: 5 },
-            { name: 'No-Step Kick Drill', duration: 5 },
-            { name: 'Contact Dots Drill', duration: 5 },
-            { name: 'Partner Kicks', duration: 5 },
-            { name: 'Partner Punts', duration: 4 }
-          ]
-        },
-        {
-          title: 'Week 4 - Offensive Development',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'High Knees', duration: 5 },
-            { name: 'Carioca', duration: 5 },
-            { name: 'Racetrack', duration: 6 },
-            { name: 'Gear Runs', duration: 5 },
-            { name: 'Meet in the Middle Grip Drill', duration: 2 },
-            { name: 'Partner Step and Throw', duration: 5 },
-            { name: 'Receiver Stance and Start', duration: 3 },
-            { name: 'Hot Potato', duration: 4 }
-          ]
-        },
-        {
-          title: 'Week 5 - Coverage & Defense',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Bounds', duration: 5 },
-            { name: 'Carioca', duration: 5 },
-            { name: 'Racetrack', duration: 6 },
-            { name: 'Multi-Directional Get Up and Go', duration: 3 },
-            { name: 'Toss Drill', duration: 3 },
-            { name: 'Running Back Stance and Start', duration: 3 },
-            { name: 'Zig-zag Pathway', duration: 5 },
-            { name: 'Deceleration Drills', duration: 5 }
-          ]
-        },
-        {
-          title: 'Week 6 - Integrated Schemes',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'High Skies', duration: 5 },
-            { name: 'Arm Circles', duration: 5 },
-            { name: 'Scatter Run', duration: 5 },
-            { name: '4-Way Balance', duration: 5 },
-            { name: 'Horizontal L to Vertical L', duration: 1 },
-            { name: 'Partner Step and Throw', duration: 4 },
-            { name: 'Hot Potato', duration: 4 },
-            { name: 'Mesh Read and React', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 7 - Mid-Season Evaluation',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Straight Leg March', duration: 5 },
-            { name: 'High Knees', duration: 5 },
-            { name: 'Racetrack', duration: 8 },
-            { name: 'Gear Runs', duration: 2 },
-            { name: 'Toss Drill', duration: 3 },
-            { name: 'Trunk Rotation Throws', duration: 3 },
-            { name: 'Receiver Stance and Start', duration: 3 },
-            { name: 'Multi-Directional Get Up and Go', duration: 3 }
-          ]
-        },
-        {
-          title: 'Week 8 - Pursuit Angles',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Gallop', duration: 5 },
-            { name: 'Crab Crawls', duration: 5 },
-            { name: 'Scatter Run', duration: 5 },
-            { name: 'Partner Mirror Drill', duration: 2 },
-            { name: 'Throw and Catch Relay', duration: 3 },
-            { name: 'Crossing Routes', duration: 5 },
-            { name: 'Angle of Pursuit Drill', duration: 5 }
-          ]
-        },
-        {
-          title: 'Week 9 - Advanced Patterns',
-          drills: [
-            { name: 'Teamwork', duration: 5 },
-            { name: 'Bounds', duration: 5 },
-            { name: 'Carioca', duration: 5 },
-            { name: 'Gear Runs Random Order', duration: 4 },
-            { name: 'Zig-Zag Tag', duration: 6 },
-            { name: 'Arm Flaps', duration: 1 },
-            { name: '3 v 3 Passing Only', duration: 12 },
-            { name: 'Army-Navy Game', duration: 7 }
-          ]
-        },
-        {
-          title: 'Week 10 - Conditioning',
-          drills: [
-            { name: 'Hydration Focus', duration: 5 },
-            { name: 'Walking Knee Hugs', duration: 5 },
-            { name: 'Lateral Shuffle', duration: 5 },
-            { name: 'Gear Runs', duration: 5 },
-            { name: 'Acceleration Drills', duration: 6 },
-            { name: 'Throw and Catch Relay', duration: 3 },
-            { name: 'Mesh with Step-Over', duration: 7 },
-            { name: 'Mesh Read and React', duration: 6 }
-          ]
-        },
-        {
-          title: 'Week 11 - Playoff Preparation',
-          drills: [
-            { name: 'Leadership', duration: 5 },
-            { name: 'Arm Slaps/Hugs', duration: 5 },
-            { name: 'Forward/Backward Runs', duration: 5 },
-            { name: 'Racetrack', duration: 8 },
-            { name: 'Position Tag', duration: 5 },
-            { name: 'Thumb to Pocket', duration: 2 },
-            { name: 'Toss Drill', duration: 4 },
-            { name: '3 v 3 Passing Only', duration: 10 }
-          ]
-        },
-        {
-          title: 'Week 12 - Championship Week',
-          drills: [
-            { name: 'Sportsmanship', duration: 5 },
-            { name: 'Bird Dog', duration: 1 },
-            { name: 'Jumping Jacks', duration: 5 },
-            { name: 'Multi-Directional Get Up and Go', duration: 5 },
-            { name: '180 Jumps', duration: 8 },
-            { name: 'Arm Flaps', duration: 1 },
-            { name: 'Arm Slaps', duration: 1 },
-            { name: '3 v 3 Passing Only', duration: 8 },
-            { name: 'Ultimate Football', duration: 15 }
-          ]
-        }
-      ]
-    };
-
-    const PracticeView = ({ team, teamKey, onUpdate, data }) => {
-      const [title, setTitle] = useState('');
-      const [drills, setDrills] = useState([]);
-      const [selectedDrill, setSelectedDrill] = useState('');
-      const [durationMinutes, setDurationMinutes] = useState('5');
-
-      const addDrill = () => {
-        if (selectedDrill) {
-          setDrills([...drills, { name: selectedDrill, duration: parseInt(durationMinutes) }]);
-          setSelectedDrill('');
-          setDurationMinutes('5');
-        }
-      };
-
-      const savePractice = () => {
-        if (title.trim() && drills.length > 0) {
-          const newData = { ...data };
-          newData.teams[teamKey].practices.push({
-            id: Date.now(),
-            title: title.trim(),
-            date: new Date().toLocaleDateString(),
-            drills,
-            totalMinutes: drills.reduce((sum, d) => sum + d.duration, 0)
-          });
-          onUpdate(newData);
-          setTitle('');
-          setDrills([]);
-          alert('Practice plan saved!');
-        }
-      };
-
-      const usePreBuiltPlan = (plan) => {
-        setTitle(plan.title);
-        setDrills(plan.drills);
-      };
-
-      const allPredefinedDrills = preBuiltPlans[teamKey]?.flatMap(p => p.drills.map(d => d.name)) || [];
-      const uniqueDrills = [...new Set(allPredefinedDrills)];
-
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Practice Plan Builder</h2>
-
-          <div style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>Pre-Built 12-Week Plans</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px', marginBottom: '20px' }}>
-              {(preBuiltPlans[teamKey] || []).map((plan, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => usePreBuiltPlan(plan)}
-                  style={{
-                    padding: '10px 12px',
-                    border: '0.5px solid #ccc',
-                    borderRadius: '4px',
-                    background: '#f9f9f9',
-                    cursor: 'pointer',
-                    fontSize: '13px',
-                    textAlign: 'left',
-                    fontWeight: '500'
-                  }}
-                >
-                  {plan.title}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
-            <div style={{ backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-              <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Practice Details</h3>
-              <input
-                type="text"
-                placeholder="Practice title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                style={{ width: '100%', padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px', marginBottom: '12px', boxSizing: 'border-box' }}
-              />
-
-              <div style={{ marginTop: '16px' }}>
-                <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '4px' }}>Add Drills</label>
-                <select
-                  value={selectedDrill}
-                  onChange={(e) => setSelectedDrill(e.target.value)}
-                  style={{ width: '100%', padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px', marginBottom: '8px' }}
-                >
-                  <option value="">Select a drill...</option>
-                  {uniqueDrills.map(drill => (
-                    <option key={drill} value={drill}>{drill}</option>
-                  ))}
-                </select>
-
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-                  <input
-                    type="number"
-                    min="1"
-                    max="30"
-                    value={durationMinutes}
-                    onChange={(e) => setDurationMinutes(e.target.value)}
-                    placeholder="Minutes"
-                    style={{ width: '60px', padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}
-                  />
-                  <button
-                    onClick={addDrill}
-                    style={{
-                      flex: 1,
-                      padding: '8px 12px',
-                      backgroundColor: '#333',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: '600'
-                    }}
-                  >
-                    Add to Plan
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: '#fff9e6', padding: '16px', borderRadius: '8px', border: '0.5px solid #ddd', maxHeight: '400px', overflowY: 'auto' }}>
-              <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Practice Timeline</h3>
-              {drills.length === 0 ? (
-                <div style={{ color: '#999', fontSize: '14px' }}>No drills added yet</div>
-              ) : (
-                <div>
-                  {drills.map((drill, idx) => (
-                    <div key={idx} style={{ marginBottom: '8px', paddingBottom: '8px', borderBottom: '0.5px solid #e0d000', display: 'flex', justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ fontWeight: '500', fontSize: '13px' }}>{drill.name}</div>
-                        <div style={{ fontSize: '11px', color: '#666' }}>{drill.duration} min</div>
-                      </div>
-                      <button
-                        onClick={() => setDrills(drills.filter((_, i) => i !== idx))}
-                        style={{ background: 'none', border: 'none', color: '#d00', cursor: 'pointer', fontSize: '12px' }}
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                  <div style={{ marginTop: '12px', fontSize: '13px', fontWeight: '600', paddingTop: '8px', borderTop: '1px solid #d0c000' }}>
-                    Total: {drills.reduce((sum, d) => sum + d.duration, 0)} min
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <button
-            onClick={savePractice}
-            disabled={!title.trim() || drills.length === 0}
-            style={{
-              padding: '10px 24px',
-              backgroundColor: drills.length > 0 && title.trim() ? '#333' : '#ccc',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: drills.length > 0 && title.trim() ? 'pointer' : 'not-allowed',
-              fontSize: '14px',
-              fontWeight: '600',
-              marginBottom: '24px'
-            }}
-          >
-            Save Practice Plan
-          </button>
-
-          {team.practices.length > 0 && (
+      if (team.players.length === 0) {
+        html += '<div class="empty-state">No players yet.  Add your first player above.</div>';
+      } else {
+        html += `<div class="player-list">`;
+        team.players.forEach(p => {
+          html += `<div class="player-item">
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>Saved Plans</h3>
-              <div style={{ display: 'grid', gap: '8px' }}>
-                {team.practices.map(p => (
-                  <div key={p.id} style={{ padding: '12px 16px', backgroundColor: 'white', border: '0.5px solid #ddd', borderRadius: '6px' }}>
-                    <div style={{ fontWeight: '500' }}>{p.title}</div>
-                    <div style={{ fontSize: '12px', color: '#999' }}>{p.date}  •  {p.drills.length} drills  •  {p.totalMinutes} min</div>
-                  </div>
-                ))}
+              <div class="player-name">#${p.number}  ${p.name}</div>
+            </div>
+            <div class="stat-inputs">
+              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">Touches</div>
+                <input type="number" value="${p.stats?.touches || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'touches', this.value)">
+              </div>
+              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">TDs</div>
+                <input type="number" value="${p.stats?.touchdowns || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'touchdowns', this.value)">
+              </div>
+              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">DEF</div>
+                <input type="number" value="${p.stats?.defensiveStops || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'defensiveStops', this.value)">
+              </div>
+              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">Games</div>
+                <input type="number" value="${p.stats?.played || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'played', this.value)">
               </div>
             </div>
-          )}
-        </div>
-      );
-    };
+            <button class="btn-danger" onclick="removePlayer('${p.id}')">Remove</button>
+          </div>`;
+        });
+        html += '</div>';
+      }
 
-    const PlaybookView = ({ team, teamKey, onUpdate, data }) => {
-      const [playName, setPlayName] = useState('');
-      const [formation, setFormation] = useState('Wing-T');
-      const [description, setDescription] = useState('');
+      document.getElementById('roster').innerHTML = html;
+    }
 
-      const savePlay = () => {
-        if (playName.trim()) {
-          const newData = { ...data };
-          newData.teams[teamKey].playbook.push({
-            id: Date.now(),
-            name: playName.trim(),
-            formation,
-            description
-          });
-          onUpdate(newData);
-          setPlayName('');
-          setDescription('');
-          alert('Play added!');
+    function addPlayer() {
+      const name = document.getElementById('playerName').value.trim();
+      const number = document.getElementById('playerNumber').value || '0';
+
+      if (name) {
+        const newPlayer = {
+          id: Date.now().toString(),
+          name,
+          number,
+          stats: { played: 0, touchdowns: 0, touches: 0, defensiveStops: 0 }
+        };
+        appData.teams[activeTeam].players.push(newPlayer);
+        saveData();
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerNumber').value = '';
+        renderRoster();
+      }
+    }
+
+    function removePlayer(id) {
+      appData.teams[activeTeam].players = appData.teams[activeTeam].players.filter(p => p.id !== id);
+      saveData();
+      renderRoster();
+    }
+
+    function updatePlayerStat(id, stat, value) {
+      const player = appData.teams[activeTeam].players.find(p => p.id === id);
+      if (player) {
+        player.stats[stat] = parseInt(value) || 0;
+        saveData();
+      }
+    }
+
+    function renderEvals() {
+      const team = appData.teams[activeTeam];
+      if (team.players.length === 0) {
+        document.getElementById('evals').innerHTML = '<h2>Player Evaluations</h2><div style="color: #999; margin-top: 20px;">Add players first</div>';
+        return;
+      }
+
+      const selectedId = team.players[0].id;
+      const player = team.players[0];
+      const eval = appData.teams[activeTeam].evals[selectedId] || {};
+
+      let html = `<h2>Player Evaluations</h2>
+        <div class="grid-2">
+          <div>
+            <h3>Select Player</h3>
+            <div style="display: grid; gap: 6px;">`;
+
+      team.players.forEach(p => {
+        html += `<button class="btn" style="background: #333; color: white; text-align: left;" onclick="selectPlayer('${p.id}')">#${p.number}  ${p.name}</button>`;
+      });
+
+      html += `</div></div>
+        <div class="card" id="evalForm"></div>
+        </div>`;
+
+      document.getElementById('evals').innerHTML = html;
+      renderEvalForm(player, eval, selectedId);
+    }
+
+    function selectPlayer(id) {
+      const player = appData.teams[activeTeam].players.find(p => p.id === id);
+      const eval = appData.teams[activeTeam].evals[id] || {};
+      renderEvalForm(player, eval, id);
+    }
+
+    function renderEvalForm(player, eval, id) {
+      const skills = [
+        { key: 'passing', label: 'Passing' },
+        { key: 'receiving', label: 'Receiving' },
+        { key: 'running', label: 'Running' },
+        { key: 'defense', label: 'Defense' },
+        { key: 'fieldAwareness', label: 'Field Awareness' },
+        { key: 'attitude', label: 'Attitude/Effort' }
+      ];
+
+      let html = `<h3>${player.name}  <span style="color: #ffc107; font-size: 20px;">⭐  ${eval.overall || 0}</span></h3>
+        <div class="eval-section">`;
+
+      skills.forEach(s => {
+        html += `<div style="margin-bottom: 16px;">
+          <label style="font-size: 13px; font-weight: 500; display: block; margin-bottom: 6px;">${s.label}: ${eval[s.key] || 0}/5</label>
+          <div class="star-rating">`;
+        for (let i = 1; i <= 5; i++) {
+          const filled = eval[s.key] >= i ? 'filled' : '';
+          html += `<button class="star-btn ${filled}" onclick="rateSkill('${id}', '${s.key}', ${i})">★</button>`;
         }
-      };
+        html += `</div></div>`;
+      });
 
-      const removePlay = (id) => {
-        const newData = { ...data };
-        newData.teams[teamKey].playbook = newData.teams[teamKey].playbook.filter(p => p.id !== id);
-        onUpdate(newData);
-      };
+      html += `<div>
+        <label style="font-size: 13px; font-weight: 500; display: block; margin-bottom: 6px;">Notes</label>
+        <textarea class="input" placeholder="Add coaching notes..." onchange="updateNotes('${id}', this.value)">${eval.notes || ''}</textarea>
+      </div></div>`;
 
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Playbook Manager</h2>
+      document.getElementById('evalForm').innerHTML = html;
+    }
 
-          <div style={{ backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '0.5px solid #ddd' }}>
-            <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Create Play</h3>
-            <div style={{ display: 'grid', gap: '8px', marginBottom: '12px' }}>
-              <input
-                type="text"
-                placeholder="Play name"
-                value={playName}
-                onChange={(e) => setPlayName(e.target.value)}
-                style={{ padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}
-              />
-              <select
-                value={formation}
-                onChange={(e) => setFormation(e.target.value)}
-                style={{ padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}
-              >
-                <option>Wing-T</option>
-                <option>Pistol Spread</option>
-                <option>Single Wing</option>
-                <option>I-Formation</option>
-                <option>Shotgun</option>
-                <option>Spread</option>
-              </select>
-              <textarea
-                placeholder="Coaching notes..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                style={{
-                  padding: '8px 12px',
-                  border: '0.5px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  minHeight: '80px',
-                  fontFamily: 'inherit',
-                  resize: 'vertical'
-                }}
-              />
-            </div>
-            <button
-              onClick={savePlay}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#333',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: '600'
-              }}
-            >
-              Add Play
-            </button>
+    function rateSkill(id, skill, value) {
+      if (!appData.teams[activeTeam].evals[id]) appData.teams[activeTeam].evals[id] = {};
+      appData.teams[activeTeam].evals[id][skill] = value;
+
+      const skills = ['passing', 'receiving', 'running', 'defense', 'fieldAwareness', 'attitude'];
+      const ratings = skills.map(s => appData.teams[activeTeam].evals[id][s] || 0);
+      appData.teams[activeTeam].evals[id].overall = (ratings.reduce((a, b) => a + b, 0) / skills.length).toFixed(1);
+      saveData();
+
+      const player = appData.teams[activeTeam].players.find(p => p.id === id);
+      renderEvalForm(player, appData.teams[activeTeam].evals[id], id);
+    }
+
+    function updateNotes(id, notes) {
+      if (!appData.teams[activeTeam].evals[id]) appData.teams[activeTeam].evals[id] = {};
+      appData.teams[activeTeam].evals[id].notes = notes;
+      saveData();
+    }
+
+    function renderPractice() {
+      document.getElementById('practice').innerHTML = `<h2>Practice Plan Builder</h2><p style="color: #999;">Practice plan builder coming soon.  Add players to your roster first!</p>`;
+    }
+
+    function renderPlaybook() {
+      const team = appData.teams[activeTeam];
+      let html = `<h2>Playbook Manager</h2>
+        <div class="card" style="background: #f9f9f9;">
+          <h3>Create Play</h3>
+          <div class="form-group">
+            <input type="text" id="playName" class="input" placeholder="Play name">
+            <select id="playForm" class="input">
+              <option>Wing-T</option><option>Pistol Spread</option><option>Single Wing</option><option>I-Formation</option><option>Shotgun</option><option>Spread</option>
+            </select>
+            <textarea id="playDesc" class="input" placeholder="Coaching notes..."></textarea>
+            <button class="btn btn-primary" onclick="addPlay()">Add Play</button>
           </div>
-
-          {team.playbook.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px', color: '#999', backgroundColor: 'white', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-              No plays yet
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gap: '8px' }}>
-              {team.playbook.map(play => (
-                <div
-                  key={play.id}
-                  style={{
-                    padding: '16px',
-                    backgroundColor: 'white',
-                    border: '0.5px solid #ddd',
-                    borderRadius: '6px',
-                    display: 'grid',
-                    gridTemplateColumns: '1fr auto'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: '600', fontSize: '15px' }}>{play.name}</div>
-                    <div style={{ fontSize: '12px', color: '#999', marginBottom: '6px' }}>{play.formation}</div>
-                    {play.description && <div style={{ fontSize: '13px', color: '#666' }}>{play.description}</div>}
-                  </div>
-                  <button
-                    onClick={() => removePlay(play.id)}
-                    style={{
-                      padding: '4px 8px',
-                      border: '0.5px solid #ccc',
-                      background: '#fff',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      color: '#d00'
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
-      );
-    };
+        <div id="playbookList" style="margin-top: 24px;"></div>`;
 
-    const FormationsView = ({ team }) => {
+      document.getElementById('playbook').innerHTML = html;
+      renderPlaybookList();
+    }
+
+    function addPlay() {
+      const name = document.getElementById('playName').value.trim();
+      if (name) {
+        appData.teams[activeTeam].playbook.push({
+          id: Date.now().toString(),
+          name,
+          formation: document.getElementById('playForm').value,
+          description: document.getElementById('playDesc').value
+        });
+        saveData();
+        document.getElementById('playName').value = '';
+        document.getElementById('playDesc').value = '';
+        renderPlaybookList();
+      }
+    }
+
+    function renderPlaybookList() {
+      const team = appData.teams[activeTeam];
+      let html = '<h3>Plays</h3>';
+      if (team.playbook.length === 0) {
+        html += '<div class="empty-state">No plays yet</div>';
+      } else {
+        team.playbook.forEach(p => {
+          html += `<div class="card">
+            <div style="font-weight: 600; font-size: 15px;">${p.name}</div>
+            <div style="font-size: 12px; color: #999; margin-bottom: 6px;">${p.formation}</div>
+            ${p.description ? `<div style="font-size: 13px; color: #666;">${p.description}</div>` : ''}
+            <button class="btn-danger" onclick="removePlay('${p.id}')" style="margin-top: 8px;">Delete</button>
+          </div>`;
+        });
+      }
+      document.getElementById('playbookList').innerHTML = html;
+    }
+
+    function removePlay(id) {
+      appData.teams[activeTeam].playbook = appData.teams[activeTeam].playbook.filter(p => p.id !== id);
+      saveData();
+      renderPlaybookList();
+    }
+
+    function renderFormations() {
       const formations = [
         { name: 'Wing-T', desc: 'Classic formation with strong misdirection capability' },
         { name: 'Pistol Spread', desc: 'QB in pistol stance, flexible split receivers' },
@@ -1148,202 +434,25 @@
         { name: 'Spread', desc: 'Multiple receiver sets, pace-oriented' }
       ];
 
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Formation Reference</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
-            {formations.map(f => (
-              <div key={f.name} style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-                <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600' }}>{f.name}</h3>
-                <p style={{ margin: 0, fontSize: '13px', color: '#666', lineHeight: '1.6' }}>{f.desc}</p>
-                <div style={{ marginTop: '16px', padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '4px', fontFamily: 'monospace', fontSize: '11px', lineHeight: '1.4', color: '#333' }}>
-                  {f.name === 'Wing-T' && '    W   R   R\nQB  RB(wing)  RB\n  O O O O O'}
-                  {f.name === 'Pistol Spread' && '        WR  WR  WR\nQB(pistol)  RB\n  O O O O O'}
-                  {f.name === 'Single Wing' && '      WR  WR  WR\nQB  RB(wing)\n  O O O O O'}
-                  {f.name === 'I-Formation' && '        WR  WR\nQB  RB  RB\n  O O O O O'}
-                  {f.name === 'Shotgun' && '    WR  WR  WR\n         QB\n  O O O O O'}
-                  {f.name === 'Spread' && '    WR  WR  WR  WR\nQB  RB\n  O O O O O'}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: '24px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-            <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600' }}>Coaching Notes</h3>
-            <p style={{ margin: 0, fontSize: '13px', color: '#666', lineHeight: '1.8' }}>
-              Wing-T formations emphasize misdirection and power plays.  Pistol Spread provides QB mobility and receiver flexibility.  Single Wing creates unique blocking angles.  I-Formation is your power running option.  Shotgun speeds up decision-making and play development.  Spread formations pace the offense and create stress on defenses.  Consider player strengths and opponent tendencies when selecting formations for game plans.
-            </p>
-          </div>
-        </div>
-      );
-    };
+      let html = `<h2>Formation Reference</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">`;
 
-    const GameDayView = ({ team, teamKey, onUpdate, data }) => {
-      const [gameTitle, setGameTitle] = useState('');
-      const [gameDate, setGameDate] = useState(new Date().toISOString().split('T')[0]);
-      const [subs, setSubs] = useState([]);
-      const [currentGame, setCurrentGame] = useState(null);
+      formations.forEach(f => {
+        html += `<div class="card">
+          <h3>${f.name}</h3>
+          <p style="margin: 0; font-size: 13px; color: #666; line-height: 1.6;">${f.desc}</p>
+        </div>`;
+      });
 
-      const startGame = () => {
-        if (gameTitle.trim()) {
-          setCurrentGame({ id: Date.now(), title: gameTitle, date: gameDate, subs: [] });
-          setSubs([]);
-          setGameTitle('');
-        }
-      };
+      html += `</div>`;
+      document.getElementById('formations').innerHTML = html;
+    }
 
-      const logSubstitution = (playerIn, playerOut) => {
-        if (playerIn && playerOut) {
-          const newSub = { in: playerIn, out: playerOut, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
-          const newSubs = [...subs, newSub];
-          setSubs(newSubs);
-          if (currentGame) setCurrentGame({ ...currentGame, subs: newSubs });
-        }
-      };
+    function renderGameDay() {
+      document.getElementById('gameday').innerHTML = `<h2>Game Day Tracker</h2><p style="color: #999;">Game day tracker coming soon.  Add players to your roster first!</p>`;
+    }
 
-      const endGame = () => {
-        if (currentGame) {
-          const newData = { ...data };
-          newData.teams[teamKey].games.push(currentGame);
-          onUpdate(newData);
-          setCurrentGame(null);
-          setSubs([]);
-          alert('Game saved!');
-        }
-      };
-
-      if (!currentGame) {
-        return (
-          <div style={{ marginTop: '16px' }}>
-            <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px' }}>Game Day Tracker</h2>
-            {team.games.length > 0 && (
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>Past Games</h3>
-                <div style={{ display: 'grid', gap: '8px' }}>
-                  {team.games.map(g => (
-                    <div key={g.id} style={{ padding: '12px 16px', backgroundColor: 'white', border: '0.5px solid #ddd', borderRadius: '6px' }}>
-                      <div style={{ fontWeight: '500' }}>{g.title}</div>
-                      <div style={{ fontSize: '12px', color: '#999' }}>{g.date}  •  {g.subs.length} substitutions</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            <div style={{ backgroundColor: '#e8f4f8', padding: '16px', borderRadius: '8px', border: '0.5px solid #b3dce6' }}>
-              <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Start New Game</h3>
-              <input
-                type="text"
-                placeholder="Game title (e.g., vs. Park District Lions)"
-                value={gameTitle}
-                onChange={(e) => setGameTitle(e.target.value)}
-                style={{ width: '100%', padding: '8px 12px', border: '0.5px solid #99c9d4', borderRadius: '4px', fontSize: '14px', marginBottom: '8px', boxSizing: 'border-box' }}
-              />
-              <input
-                type="date"
-                value={gameDate}
-                onChange={(e) => setGameDate(e.target.value)}
-                style={{ width: '100%', padding: '8px 12px', border: '0.5px solid #99c9d4', borderRadius: '4px', fontSize: '14px', marginBottom: '12px', boxSizing: 'border-box' }}
-              />
-              <button
-                onClick={startGame}
-                disabled={!gameTitle.trim()}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  backgroundColor: gameTitle.trim() ? '#333' : '#ccc',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: gameTitle.trim() ? 'pointer' : 'not-allowed',
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}
-              >
-                Start Game
-              </button>
-            </div>
-          </div>
-        );
-      }
-
-      return (
-        <div style={{ marginTop: '16px' }}>
-          <div style={{ backgroundColor: '#fff3cd', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '0.5px solid #ffecb5' }}>
-            <h2 style={{ margin: '0 0 4px 0', fontSize: '20px', fontWeight: '600' }}>{currentGame.title}</h2>
-            <div style={{ fontSize: '14px', color: '#666' }}>Game Date: {currentGame.date}</div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
-            <div style={{ backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-              <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Log Substitution</h3>
-              <div style={{ display: 'grid', gap: '8px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '4px' }}>Player IN</label>
-                  <select id="playerIn" style={{ width: '100%', padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}>
-                    <option value="">Select...</option>
-                    {team.players.map(p => (<option key={p.id} value={p.name}>#{p.number}  {p.name}</option>))}
-                  </select>
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#666', marginBottom: '4px' }}>Player OUT</label>
-                  <select id="playerOut" style={{ width: '100%', padding: '8px 12px', border: '0.5px solid #ccc', borderRadius: '4px', fontSize: '14px' }}>
-                    <option value="">Select...</option>
-                    {team.players.map(p => (<option key={p.id} value={p.name}>#{p.number}  {p.name}</option>))}
-                  </select>
-                </div>
-                <button
-                  onClick={() => {
-                    const playerIn = document.getElementById('playerIn').value;
-                    const playerOut = document.getElementById('playerOut').value;
-                    if (playerIn && playerOut) {
-                      logSubstitution(playerIn, playerOut);
-                      document.getElementById('playerIn').value = '';
-                      document.getElementById('playerOut').value = '';
-                    }
-                  }}
-                  style={{ padding: '8px 16px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' }}
-                >
-                  Log Sub
-                </button>
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: '#f0f0f0', padding: '16px', borderRadius: '8px', border: '0.5px solid #ddd' }}>
-              <h3 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Substitution Log</h3>
-              {subs.length === 0 ? (
-                <div style={{ color: '#999', fontSize: '14px' }}>No substitutions yet</div>
-              ) : (
-                <div style={{ display: 'grid', gap: '6px', maxHeight: '300px', overflowY: 'auto' }}>
-                  {subs.map((sub, idx) => (
-                    <div key={idx} style={{ fontSize: '13px', paddingBottom: '6px', borderBottom: '0.5px solid #ddd' }}>
-                      <div style={{ color: '#999', fontSize: '11px' }}>{sub.time}</div>
-                      <div><span style={{ color: '#d00', fontWeight: '500' }}>{sub.out}</span> → <span style={{ color: '#080', fontWeight: '500' }}>{sub.in}</span></div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <button
-            onClick={endGame}
-            style={{
-              padding: '10px 24px',
-              backgroundColor: '#333',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '600'
-            }}
-          >
-            Save Game
-          </button>
-        </div>
-      );
-    };
-
-    ReactDOM.render(<FootballAppPro />, document.getElementById('root'));
+    init();
   </script>
 </body>
 </html>
