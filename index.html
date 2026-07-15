@@ -21,7 +21,7 @@
     .team-buttons { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
     .team-btn { padding: 10px 16px; border: 0.5px solid #ccc; border-radius: 6px; background: white; color: #333; cursor: pointer; font-weight: 500; font-size: 14px; }
     .team-btn.active { border: 2px solid #333; background: #333; color: white; }
-    .tab-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+    .tab-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
     .tab-btn { padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 4px; background: #f5f5f5; color: #333; cursor: pointer; font-size: 12px; font-weight: 400; }
     .tab-btn.active { border: 1px solid #333; background: #333; color: white; font-weight: 600; }
     .view { display: none; }
@@ -31,39 +31,65 @@
     textarea { min-height: 100px; resize: vertical; }
     .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; }
     .btn-primary { background: #333; color: white; }
+    .btn-success { background: #28a745; color: white; }
     .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
-    .btn-danger { background: none; border: 0.5px solid #ccc; color: #d00; font-size: 12px; padding: 4px 8px; }
+    .btn-small { padding: 4px 8px; font-size: 12px; }
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-edit { background: #0066cc; color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
     .card { background: white; padding: 16px; border-radius: 8px; border: 0.5px solid #ddd; margin-bottom: 12px; }
     .stat-card { padding: 16px; background: white; border: 0.5px solid #ddd; border-radius: 8px; text-align: center; }
     .stat-label { font-size: 12px; color: #999; margin-bottom: 8px; }
     .stat-value { font-size: 32px; font-weight: 700; color: #333; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .player-list { display: grid; gap: 8px; }
-    .player-item { padding: 16px; background: white; border: 0.5px solid #ddd; border-radius: 6px; display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px; align-items: center; }
-    .player-name { font-weight: 600; font-size: 15px; }
-    .player-pos { font-size: 12px; color: #999; }
+    .player-item { padding: 12px; background: white; border: 0.5px solid #ddd; border-radius: 6px; display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 12px; align-items: center; }
+    .player-name { font-weight: 600; font-size: 14px; }
     .stat-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; font-size: 12px; }
     .eval-section { margin-bottom: 24px; }
     .star-rating { display: flex; gap: 4px; }
     .star-btn { width: 32px; height: 32px; border: 0.5px solid #ccc; border-radius: 4px; background: #f5f5f5; cursor: pointer; font-size: 14px; font-weight: 600; }
     .star-btn.filled { background: #ffc107; }
     .empty-state { text-align: center; padding: 40px; color: #999; background: white; border-radius: 8px; border: 0.5px solid #ddd; }
+    .practice-week { padding: 12px; background: #f0f8ff; border-left: 4px solid #0066cc; border-radius: 4px; margin-bottom: 8px; cursor: pointer; }
+    .practice-week:hover { background: #e0f0ff; }
+    .drill-item { padding: 8px 12px; background: #f9f9f9; border: 0.5px solid #ddd; border-radius: 4px; margin-bottom: 8px; }
+    .game-banner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 16px; }
+    .game-score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; margin-bottom: 12px; text-align: center; }
+    .score-board { font-size: 48px; font-weight: 700; }
+    .quarter-info { background: white; color: #333; padding: 8px 16px; border-radius: 4px; font-weight: 600; }
+    .field-svg { width: 100%; max-width: 600px; height: auto; border: 3px solid #333; border-radius: 8px; display: block; margin: 16px auto; cursor: crosshair; background: #2d5016; }
+    .player-circle { cursor: grab; }
+    .player-circle:active { cursor: grabbing; }
+    .field-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 12px 0; }
+    .field-controls { background: #f0f8ff; padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+    .player-chip { padding: 6px 12px; background: #e3f2fd; border: 1px solid #2196f3; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; margin-right: 8px; margin-bottom: 4px; cursor: pointer; }
+    .player-chip.offense { background: #0066cc; color: white; border-color: #0066cc; }
+    .player-chip.defense { background: #dc3545; color: white; border-color: #dc3545; }
+    .sub-history { background: #f9f9f9; padding: 12px; border-radius: 4px; margin: 8px 0; font-size: 12px; }
+    .sub-time { color: #999; font-size: 11px; margin-bottom: 2px; }
+    .sub-change { display: flex; justify-content: space-between; align-items: center; }
+    .sub-out { color: #d32f2f; font-weight: 500; }
+    .sub-in { color: #388e3c; font-weight: 500; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+    .modal.active { display: flex; align-items: center; justify-content: center; }
+    .modal-content { background: white; padding: 24px; border-radius: 8px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+    .modal-close { float: right; cursor: pointer; font-size: 24px; }
+    .play-diagram { background: #f9f9f9; border: 0.5px solid #ddd; border-radius: 8px; padding: 12px; margin: 8px 0; }
     @media (max-width: 768px) {
       .grid-2 { grid-template-columns: 1fr; }
       .player-item { grid-template-columns: 1fr; }
       .stat-inputs { grid-template-columns: repeat(2, 1fr); }
-      .tab-buttons { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+      .game-score { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .container { padding: 12px; }
       h1 { font-size: 24px; margin-bottom: 12px; }
       h2 { font-size: 18px; }
       .stat-inputs { grid-template-columns: 1fr; }
-      .stat-card { padding: 12px; }
-      .stat-value { font-size: 24px; }
-      .player-name { font-size: 14px; }
-      .btn { padding: 6px 12px; font-size: 12px; }
+      .player-item { grid-template-columns: 1fr; }
+      .score-board { font-size: 36px; }
     }
   </style>
 </head>
@@ -81,8 +107,7 @@
         <button class="tab-btn" data-view="evals">⭐  Evals</button>
         <button class="tab-btn" data-view="practice">📋  Practices</button>
         <button class="tab-btn" data-view="playbook">📖  Playbook</button>
-        <button class="tab-btn" data-view="formations">📐  Formations</button>
-        <button class="tab-btn" data-view="gameday">🎮  Game Day</button>
+        <button class="tab-btn" data-view="gameday">🎮  Game</button>
       </div>
     </div>
 
@@ -91,19 +116,57 @@
     <div id="evals" class="view"></div>
     <div id="practice" class="view"></div>
     <div id="playbook" class="view"></div>
-    <div id="formations" class="view"></div>
     <div id="gameday" class="view"></div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h3>Edit Player</h3>
+      <div class="form-group">
+        <input type="text" id="editName" class="input" placeholder="Player name">
+        <input type="text" id="editNumber" class="input" placeholder="Jersey #">
+        <button class="btn btn-primary" onclick="savePlayerEdit()">Save</button>
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
   </div>
 
   <script>
     let activeTeam = '5-6';
     let activeView = 'home';
+    let editingPlayerId = null;
+    let currentGame = null;
     let appData = {
       teams: {
         '5-6': { name: '5/6 Division', players: [], practices: [], playbook: [], games: [], evals: {} },
         '7-8': { name: '7/8 Division', players: [], practices: [], playbook: [], games: [], evals: {} }
       }
     };
+
+    const drills = ['Teamwork', 'High Knees', 'Butt Kicks', 'Gear Runs', 'Log Roll Bonanza', 'Meet in the Middle Grip Drill', 'Catch and Step with Partner', 'Hot Potato', 'Snake Run', 'Zig-zag Pathway', 'Position Tag', 'Multi-Directional Get Up and Go', 'Learning to Fall', 'Tag Games', 'Sharks and Minnows', 'Partner Mirror Drill', 'Throw and Catch Relay', 'Acceleration Drills', 'No-Step Kick Drill', 'Contact Dots Drill', 'Lateral Shuffle', 'Animal Relay', 'Balance Kicks', 'Partner Kicks'];
+
+    const preBuiltWeeks = [
+      { week: 'Week 1', title: 'Foundations', drills: ['Teamwork', 'High Knees', 'Gear Runs', 'Meet in the Middle Grip Drill', 'Catch and Step with Partner'] },
+      { week: 'Week 2', title: 'Running & Receiving', drills: ['Teamwork', 'Butt Kicks', 'Zig-zag Pathway', 'Hot Potato', 'Snake Run'] },
+      { week: 'Week 3', title: 'Kicking & Contact', drills: ['Teamwork', 'Lateral Shuffle', 'Balance Kicks', 'Learning to Fall', 'Tag Games'] },
+      { week: 'Week 4', title: 'Offensive Skills', drills: ['Teamwork', 'Gear Runs', 'Meet in the Middle Grip Drill', 'Partner Mirror Drill', 'Sharks and Minnows'] },
+      { week: 'Week 5', title: 'Defensive Drills', drills: ['Teamwork', 'Multi-Directional Get Up and Go', 'Snake Run', 'Throw and Catch Relay', 'Position Tag'] },
+      { week: 'Week 6', title: 'Integrated Offense', drills: ['Teamwork', 'High Knees', 'Meet in the Middle Grip Drill', 'Throw and Catch Relay', 'Zig-zag Pathway'] },
+      { week: 'Week 7', title: 'Mid-Season Review', drills: ['Teamwork', 'Gear Runs', 'Acceleration Drills', 'Hot Potato', 'Tag Games'] },
+      { week: 'Week 8', title: 'Contact & Tackling', drills: ['Teamwork', 'Log Roll Bonanza', 'Learning to Fall', 'Animal Relay', 'Tag Games'] },
+      { week: 'Week 9', title: 'Complex Patterns', drills: ['Teamwork', 'Catch and Step with Partner', 'Snake Run', 'Partner Mirror Drill', 'Sharks and Minnows'] },
+      { week: 'Week 10', title: 'Endurance & Pace', drills: ['Teamwork', 'Gear Runs', 'Hot Potato', 'Tag Games', 'Throw and Catch Relay'] },
+      { week: 'Week 11', title: 'Playoff Prep', drills: ['Teamwork', 'Meet in the Middle Grip Drill', 'High Knees', 'Zig-zag Pathway', 'Tag Games'] },
+      { week: 'Week 12', title: 'Championship Focus', drills: ['Teamwork', 'Acceleration Drills', 'Partner Mirror Drill', 'Hot Potato', 'Sharks and Minnows'] }
+    ];
+
+    let currentPlayDiagram = { offense: [], defense: [], lines: [] };
+    let draggingElement = null;
+    let dragOffset = { x: 0, y: 0 };
+    let drawMode = null;
+    let isDrawing = false;
+    let startPoint = null;
 
     function init() {
       loadData();
@@ -126,6 +189,7 @@
           activeTeam = e.target.dataset.team;
           document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('active'));
           e.target.classList.add('active');
+          currentGame = null;
           renderView();
         });
       });
@@ -150,7 +214,6 @@
       else if (activeView === 'evals') renderEvals();
       else if (activeView === 'practice') renderPractice();
       else if (activeView === 'playbook') renderPlaybook();
-      else if (activeView === 'formations') renderFormations();
       else if (activeView === 'gameday') renderGameDay();
     }
 
@@ -164,9 +227,9 @@
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Players</div><div class="stat-value">${team.players.length}</div></div>
           <div class="stat-card"><div class="stat-label">Avg Rating</div><div class="stat-value">${avgRating}</div></div>
-          <div class="stat-card"><div class="stat-label">Practice Plans</div><div class="stat-value">${team.practices.length}</div></div>
-          <div class="stat-card"><div class="stat-label">Playbook Plays</div><div class="stat-value">${team.playbook.length}</div></div>
-          <div class="stat-card"><div class="stat-label">Games Tracked</div><div class="stat-value">${team.games.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Practices</div><div class="stat-value">${team.practices.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Plays</div><div class="stat-value">${team.playbook.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Games</div><div class="stat-value">${team.games.length}</div></div>
         </div>`;
 
       if (team.players.length > 0) {
@@ -176,13 +239,13 @@
           .slice(0, 5);
 
         html += `<div class="grid-2">
-          <div class="card"><h3>Quick Actions</h3>
+          <div class="card"><h3>Quick Start</h3>
             <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 2;">
               <li>Add players to roster</li>
-              <li>Rate players with skill evaluations</li>
-              <li>Create practice plans</li>
-              <li>Build your playbook</li>
-              <li>Track game substitutions</li>
+              <li>Rate players with evaluations</li>
+              <li>Build 12-week practice schedule</li>
+              <li>Create and visualize plays</li>
+              <li>Track game substitutions & stats</li>
             </ul>
           </div>
           <div class="card"><h3>Top Rated Players</h3>
@@ -200,7 +263,7 @@
     function renderRoster() {
       const team = appData.teams[activeTeam];
       let html = `<h2>Manage Roster</h2>
-        <div class="card" style="background: #f9f9f9;">
+        <div class="card" style="background: #f0f8ff; border-left: 4px solid #0066cc;">
           <h3>Add New Player</h3>
           <div class="form-group" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
             <input type="text" id="playerName" class="input" placeholder="Player name">
@@ -214,31 +277,58 @@
       } else {
         html += `<div class="player-list">`;
         team.players.forEach(p => {
+          const rating = appData.teams[activeTeam].evals[p.id]?.overall || '—';
           html += `<div class="player-item">
             <div>
               <div class="player-name">#${p.number}  ${p.name}</div>
+              <div style="font-size: 11px; color: #999;">Rating: ⭐ ${rating}</div>
             </div>
             <div class="stat-inputs">
-              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">Touches</div>
+              <div><div style="color: #999; font-size: 11px;">Touches</div>
                 <input type="number" value="${p.stats?.touches || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'touches', this.value)">
               </div>
-              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">TDs</div>
+              <div><div style="color: #999; font-size: 11px;">TDs</div>
                 <input type="number" value="${p.stats?.touchdowns || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'touchdowns', this.value)">
               </div>
-              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">DEF</div>
+              <div><div style="color: #999; font-size: 11px;">DEF</div>
                 <input type="number" value="${p.stats?.defensiveStops || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'defensiveStops', this.value)">
               </div>
-              <div><div style="color: #999; margin-bottom: 4px; font-size: 11px;">Games</div>
+              <div><div style="color: #999; font-size: 11px;">Games</div>
                 <input type="number" value="${p.stats?.played || 0}" style="width: 100%; padding: 4px;" onchange="updatePlayerStat('${p.id}', 'played', this.value)">
               </div>
             </div>
-            <button class="btn-danger" onclick="removePlayer('${p.id}')">Remove</button>
+            <button class="btn-edit btn-small" onclick="openEditModal('${p.id}')">Edit</button>
+            <button class="btn-danger btn-small" onclick="removePlayer('${p.id}')">Remove</button>
           </div>`;
         });
         html += '</div>';
       }
 
       document.getElementById('roster').innerHTML = html;
+    }
+
+    function openEditModal(id) {
+      editingPlayerId = id;
+      const player = appData.teams[activeTeam].players.find(p => p.id === id);
+      document.getElementById('editName').value = player.name;
+      document.getElementById('editNumber').value = player.number;
+      document.getElementById('editModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').classList.remove('active');
+      editingPlayerId = null;
+    }
+
+    function savePlayerEdit() {
+      if (editingPlayerId) {
+        const player = appData.teams[activeTeam].players.find(p => p.id === editingPlayerId);
+        player.name = document.getElementById('editName').value.trim();
+        player.number = document.getElementById('editNumber').value;
+        saveData();
+        closeModal();
+        renderRoster();
+      }
     }
 
     function addPlayer() {
@@ -289,7 +379,7 @@
         <div class="grid-2">
           <div>
             <h3>Select Player</h3>
-            <div style="display: grid; gap: 6px;">`;
+            <div style="display: grid; gap: 6px; max-height: 500px; overflow-y: auto;">`;
 
       team.players.forEach(p => {
         html += `<button class="btn" style="background: #333; color: white; text-align: left;" onclick="selectPlayer('${p.id}')">#${p.number}  ${p.name}</button>`;
@@ -360,96 +450,785 @@
       saveData();
     }
 
+    let currentPracticeDrills = [];
+
     function renderPractice() {
-      document.getElementById('practice').innerHTML = `<h2>Practice Plan Builder</h2><p style="color: #999;">Practice plan builder coming soon.  Add players to your roster first!</p>`;
+      const team = appData.teams[activeTeam];
+      let html = `<h2>Practice Plan Builder</h2>
+        <div class="grid-2">
+          <div>
+            <h3>Build Custom Practice</h3>
+            <div class="card" style="background: #f0f8ff;">
+              <input type="text" id="pracTitle" class="input" placeholder="Practice name" style="margin-bottom: 12px;">
+              <select id="pracDrill" class="input" style="margin-bottom: 8px;">
+                <option value="">Select drill...</option>
+                ${drills.map(d => `<option value="${d}">${d}</option>`).join('')}
+              </select>
+              <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px;">
+                <input type="number" id="pracDuration" class="input" placeholder="Minutes" value="5" min="1" max="30">
+                <button class="btn btn-primary btn-small" onclick="addDrillToPlan()">Add</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 style="margin-top: 0;">Session Timeline</h3>
+              <div id="drillList"></div>
+              <div style="background: #f9f9f9; padding: 12px; border-radius: 4px; margin: 12px 0; font-weight: 600;">
+                Total: <span id="totalTime">0</span> min
+              </div>
+              <button class="btn btn-success" onclick="savePractice()" style="width: 100%;">Save Practice</button>
+            </div>
+          </div>
+
+          <div>
+            <h3>12-Week Practice Schedule</h3>
+            <div style="max-height: 600px; overflow-y: auto;">
+              ${preBuiltWeeks.map(w => `
+                <div class="practice-week" onclick="loadPreBuiltWeek('${w.week}', '${w.title}', ${JSON.stringify(w.drills).replace(/"/g, '&quot;')})">
+                  <strong>${w.week} - ${w.title}</strong><br>
+                  <small>${w.drills.length} drills</small>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div id="practiceList" style="margin-top: 24px;"></div>`;
+
+      document.getElementById('practice').innerHTML = html;
+      updateDrillList();
+      renderPracticeList();
+    }
+
+    function loadPreBuiltWeek(week, title, drills) {
+      document.getElementById('pracTitle').value = `${week} - ${title}`;
+      currentPracticeDrills = drills.map(d => ({ name: d, duration: 5 }));
+      updateDrillList();
+    }
+
+    function addDrillToPlan() {
+      const drill = document.getElementById('pracDrill').value;
+      const duration = parseInt(document.getElementById('pracDuration').value) || 5;
+      if (drill) {
+        currentPracticeDrills.push({ name: drill, duration });
+        document.getElementById('pracDrill').value = '';
+        document.getElementById('pracDuration').value = '5';
+        updateDrillList();
+      }
+    }
+
+    function updateDrillList() {
+      let html = '';
+      currentPracticeDrills.forEach((d, idx) => {
+        html += `<div class="drill-item">
+          <div style="display: flex; justify-content: space-between;">
+            <div><strong>${d.name}</strong></div>
+            <button class="btn-danger btn-small" onclick="removeDrillFromPlan(${idx})">Remove</button>
+          </div>
+          <small style="color: #666;">${d.duration} min</small>
+        </div>`;
+      });
+      document.getElementById('drillList').innerHTML = html || '<div style="color: #999;">No drills added yet</div>';
+      const total = currentPracticeDrills.reduce((sum, d) => sum + d.duration, 0);
+      document.getElementById('totalTime').textContent = total;
+    }
+
+    function removeDrillFromPlan(idx) {
+      currentPracticeDrills.splice(idx, 1);
+      updateDrillList();
+    }
+
+    function savePractice() {
+      const title = document.getElementById('pracTitle').value.trim();
+      if (title && currentPracticeDrills.length > 0) {
+        appData.teams[activeTeam].practices.push({
+          id: Date.now().toString(),
+          title,
+          date: new Date().toLocaleDateString(),
+          drills: [...currentPracticeDrills],
+          notes: ''
+        });
+        saveData();
+        currentPracticeDrills = [];
+        document.getElementById('pracTitle').value = '';
+        renderPractice();
+        alert('Practice plan saved!');
+      }
+    }
+
+    function renderPracticeList() {
+      const team = appData.teams[activeTeam];
+      let html = '<h2 style="margin-top: 32px;">Your Practice Plans</h2>';
+      if (team.practices.length === 0) {
+        html += '<div class="empty-state">No practice plans saved yet</div>';
+      } else {
+        html += '<div style="display: grid; gap: 8px;">';
+        team.practices.forEach(p => {
+          const totalMin = p.drills.reduce((sum, d) => sum + d.duration, 0);
+          html += `<div class="card" style="border-left: 4px solid #28a745;">
+            <div style="font-weight: 600; font-size: 15px;">${p.title}</div>
+            <div style="font-size: 12px; color: #999; margin-bottom: 8px;">${p.date}  •  ${totalMin} min  •  ${p.drills.length} drills</div>
+            <div style="font-size: 12px; color: #666;">${p.drills.map(d => `${d.name} (${d.duration}m)`).join(' → ')}</div>
+          </div>`;
+        });
+        html += '</div>';
+      }
+      const practiceListElement = document.getElementById('practiceList');
+      if (practiceListElement) {
+        practiceListElement.innerHTML = html;
+      }
     }
 
     function renderPlaybook() {
       const team = appData.teams[activeTeam];
-      let html = `<h2>Playbook Manager</h2>
-        <div class="card" style="background: #f9f9f9;">
-          <h3>Create Play</h3>
-          <div class="form-group">
-            <input type="text" id="playName" class="input" placeholder="Play name">
-            <select id="playForm" class="input">
-              <option>Wing-T</option><option>Pistol Spread</option><option>Single Wing</option><option>I-Formation</option><option>Shotgun</option><option>Spread</option>
-            </select>
-            <textarea id="playDesc" class="input" placeholder="Coaching notes..."></textarea>
-            <button class="btn btn-primary" onclick="addPlay()">Add Play</button>
+      let html = `<h2>Playbook - Visual Play Builder</h2>
+        <div style="display: grid; grid-template-columns: 1fr 250px; gap: 16px;">
+          <div>
+            <div class="grid-2">
+              <div>
+                <h3>Create New Play</h3>
+                <div class="card" style="background: #f0f8ff;">
+                  <input type="text" id="playName" class="input" placeholder="Play name" style="margin-bottom: 8px;">
+                  <select id="playForm" class="input" style="margin-bottom: 8px;">
+                    <option>Wing-T</option><option>Pistol Spread</option><option>Single Wing</option><option>I-Formation</option><option>Shotgun</option><option>Spread</option>
+                  </select>
+                  <select id="playCategory" class="input" style="margin-bottom: 8px;">
+                    <option value="Offensive">Offensive</option>
+                    <option value="Defensive">Defensive</option>
+                    <option value="Red Zone">Red Zone</option>
+                    <option value="3rd Down">3rd Down</option>
+                    <option value="Goal Line">Goal Line</option>
+                    <option value="Special Teams">Special Teams</option>
+                  </select>
+                  <textarea id="playDesc" class="input" placeholder="Notes, keys, reads..." style="min-height: 70px; margin-bottom: 8px;"></textarea>
+                  <button class="btn btn-success" onclick="saveNewPlay()" style="width: 100%;">Save Play</button>
+                </div>
+              </div>
+
+              <div>
+                <h3>Tools & Actions</h3>
+                <div class="field-controls">
+                  <div style="margin-bottom: 12px;">
+                    <strong style="display: block; margin-bottom: 6px;">Draw on Field</strong>
+                    <button class="btn btn-primary btn-small" onclick="setDrawMode('route')" id="drawRoute">→ Route</button>
+                    <button class="btn btn-primary btn-small" onclick="setDrawMode('block')" id="drawBlock">⊡ Block</button>
+                    <button class="btn btn-primary btn-small" onclick="setDrawMode('motion')" id="drawMotion">~ Motion</button>
+                  </div>
+                  <div style="margin-bottom: 12px;">
+                    <strong style="display: block; margin-bottom: 6px;">Add Players</strong>
+                    <button class="btn btn-primary btn-small" onclick="addOffensePlayer(140, 100)">+ Off</button>
+                    <button class="btn btn-danger btn-small" onclick="addDefensePlayer(320, 100)">+ Def</button>
+                  </div>
+                  <div>
+                    <strong style="display: block; margin-bottom: 6px;">Edit Field</strong>
+                    <button class="btn btn-secondary btn-small" onclick="undoLine()">Undo</button>
+                    <button class="btn btn-secondary btn-small" onclick="clearField()">Clear</button>
+                    <button class="btn btn-secondary btn-small" onclick="flipField()">Flip</button>
+                    <button class="btn btn-secondary btn-small" onclick="resetTemplate()">Reset</button>
+                  </div>
+                </div>
+                <div style="font-size: 11px; color: #666; margin-top: 12px; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+                  <strong>Draw:</strong> Select tool, click & drag on field.  <strong>Flip:</strong> Mirror play left-right.
+                </div>
+              </div>
+            </div>
+
+            <div style="background: white; padding: 16px; border-radius: 8px; border: 0.5px solid #ddd; margin: 16px 0;">
+              <h3 style="margin-top: 0;">Field Editor - Drag circles to customize play</h3>
+              <p style="font-size: 12px; color: #666; margin-bottom: 12px;">
+                <strong>Players:</strong> Blue circles = Offense  •  Red outlines = Defense<br>
+                <strong>Lines:</strong> Yellow arrow = Route  •  Green T = Block  •  Purple dots = Motion
+              </p>
+              <svg id="fieldEditor" width="100%" height="450" viewBox="0 0 520 300" style="background: #1a4d2e; border: 3px solid #fff; border-radius: 8px; cursor: crosshair;">
+            <!-- Sidelines -->
+            <line x1="20" y1="20" x2="20" y2="280" stroke="white" stroke-width="2"/>
+            <line x1="500" y1="20" x2="500" y2="280" stroke="white" stroke-width="2"/>
+            <!-- Goal lines -->
+            <line x1="60" y1="20" x2="60" y2="280" stroke="white" stroke-width="3"/>
+            <line x1="460" y1="20" x2="460" y2="280" stroke="white" stroke-width="3"/>
+            <!-- 50-yard line -->
+            <line x1="260" y1="20" x2="260" y2="280" stroke="white" stroke-width="3"/>
+            <!-- Yard lines (10 yard increments) -->
+            <line x1="100" y1="20" x2="100" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="20" x2="140" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="180" y1="20" x2="180" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="220" y1="20" x2="220" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="300" y1="20" x2="300" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="340" y1="20" x2="340" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="380" y1="20" x2="380" y2="280" stroke="white" stroke-width="1"/>
+            <line x1="420" y1="20" x2="420" y2="280" stroke="white" stroke-width="1"/>
+            <!-- Hash marks (every 10 yards) -->
+            <line x1="60" y1="145" x2="100" y2="145" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="145" x2="180" y2="145" stroke="white" stroke-width="1"/>
+            <line x1="220" y1="145" x2="260" y2="145" stroke="white" stroke-width="1"/>
+            <line x1="260" y1="145" x2="300" y2="145" stroke="white" stroke-width="1"/>
+            <line x1="340" y1="145" x2="380" y2="145" stroke="white" stroke-width="1"/>
+            <line x1="420" y1="145" x2="460" y2="145" stroke="white" stroke-width="1"/>
+            <!-- Yard numbers -->
+            <text x="60" y="35" font-size="14" fill="white" font-weight="bold" text-anchor="middle">G</text>
+            <text x="100" y="35" font-size="12" fill="white" text-anchor="middle">10</text>
+            <text x="140" y="35" font-size="12" fill="white" text-anchor="middle">20</text>
+            <text x="180" y="35" font-size="12" fill="white" text-anchor="middle">30</text>
+            <text x="220" y="35" font-size="12" fill="white" text-anchor="middle">40</text>
+            <text x="260" y="35" font-size="14" fill="white" font-weight="bold" text-anchor="middle">50</text>
+            <text x="300" y="35" font-size="12" fill="white" text-anchor="middle">40</text>
+            <text x="340" y="35" font-size="12" fill="white" text-anchor="middle">30</text>
+            <text x="380" y="35" font-size="12" fill="white" text-anchor="middle">20</text>
+            <text x="420" y="35" font-size="12" fill="white" text-anchor="middle">10</text>
+            <text x="460" y="35" font-size="14" fill="white" font-weight="bold" text-anchor="middle">G</text>
+            <!-- End zones -->
+            <rect x="20" y="20" width="40" height="260" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2,2" opacity="0.3"/>
+            <rect x="460" y="20" width="40" height="260" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2,2" opacity="0.3"/>
+              </svg>
+            </div>
+          </div>
+
+          <div>
+            <h3>Your Plays</h3>
+            <div id="playbookSidebar" style="max-height: 600px; overflow-y: auto;"></div>
           </div>
         </div>
+
         <div id="playbookList" style="margin-top: 24px;"></div>`;
 
       document.getElementById('playbook').innerHTML = html;
+      resetTemplate();
       renderPlaybookList();
+      renderPlaybookSidebar();
+
+      // Setup field editor interaction
+      setTimeout(() => {
+        const fieldSvg = document.getElementById('fieldEditor');
+        if (fieldSvg) {
+          fieldSvg.addEventListener('mousedown', handleFieldMouseDown);
+          fieldSvg.addEventListener('mousemove', handleFieldMouseMove);
+          fieldSvg.addEventListener('mouseup', handleFieldMouseUp);
+        }
+      }, 100);
     }
 
-    function addPlay() {
-      const name = document.getElementById('playName').value.trim();
-      if (name) {
-        appData.teams[activeTeam].playbook.push({
-          id: Date.now().toString(),
-          name,
-          formation: document.getElementById('playForm').value,
-          description: document.getElementById('playDesc').value
-        });
-        saveData();
-        document.getElementById('playName').value = '';
-        document.getElementById('playDesc').value = '';
-        renderPlaybookList();
+    function setDrawMode(mode) {
+      drawMode = drawMode === mode ? null : mode;
+      document.getElementById('drawRoute').style.opacity = drawMode === 'route' ? '1' : '0.6';
+      document.getElementById('drawBlock').style.opacity = drawMode === 'block' ? '1' : '0.6';
+      document.getElementById('drawMotion').style.opacity = drawMode === 'motion' ? '1' : '0.6';
+    }
+
+    function undoLine() {
+      if (currentPlayDiagram.lines && currentPlayDiagram.lines.length > 0) {
+        currentPlayDiagram.lines.pop();
+        renderField();
       }
+    }
+
+    function flipField() {
+      // Mirror all players and lines horizontally
+      currentPlayDiagram.offense = currentPlayDiagram.offense.map(p => ({ x: 520 - p.x, y: p.y }));
+      currentPlayDiagram.defense = currentPlayDiagram.defense.map(p => ({ x: 520 - p.x, y: p.y }));
+      currentPlayDiagram.lines = currentPlayDiagram.lines.map(line => ({
+        type: line.type,
+        x1: 520 - line.x1,
+        y1: line.y1,
+        x2: 520 - line.x2,
+        y2: line.y2
+      }));
+      renderField();
+    }
+
+    function resetTemplate() {
+      currentPlayDiagram = {
+        offense: [
+          { x: 140, y: 120 },
+          { x: 140, y: 150 },
+          { x: 180, y: 100 },
+          { x: 180, y: 150 },
+          { x: 200, y: 135 }
+        ],
+        defense: [
+          { x: 280, y: 110 },
+          { x: 280, y: 160 },
+          { x: 320, y: 135 }
+        ],
+        lines: []
+      };
+      renderField();
+    }
+
+    function addOffensePlayer(x, y) {
+      currentPlayDiagram.offense.push({ x, y });
+      renderField();
+    }
+
+    function addDefensePlayer(x, y) {
+      currentPlayDiagram.defense.push({ x, y });
+      renderField();
+    }
+
+    function clearField() {
+      currentPlayDiagram = { offense: [], defense: [], lines: [] };
+      renderField();
+    }
+
+    function renderField() {
+      const svg = document.getElementById('fieldEditor');
+      if (!svg) return;
+
+      const offenseCircles = currentPlayDiagram.offense.map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="10" fill="#fff" stroke="#0066cc" stroke-width="2" class="player-circle" data-type="offense" data-index="${i}"/>`).join('');
+      
+      const defenseCircles = currentPlayDiagram.defense.map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="10" fill="none" stroke="#ff6b6b" stroke-width="2" class="player-circle" data-type="defense" data-index="${i}"/>`).join('');
+
+      const drawnLines = (currentPlayDiagram.lines || []).map(line => {
+        if (line.type === 'route') {
+          return `<line x1="${line.x1}" y1="${line.y1}" x2="${line.x2}" y2="${line.y2}" stroke="#ffcc00" stroke-width="2.5" stroke-linecap="round"/>
+            <polygon points="${line.x2},${line.y2} ${line.x2 - 8},${line.y2 - 5} ${line.x2 - 5},${line.y2 - 8}" fill="#ffcc00"/>`;
+        } else if (line.type === 'block') {
+          // Calculate perpendicular T-shape
+          const dx = line.x2 - line.x1;
+          const dy = line.y2 - line.y1;
+          const len = Math.sqrt(dx * dx + dy * dy);
+          const ux = dx / len;
+          const uy = dy / len;
+          const px = -uy * 8;
+          const py = ux * 8;
+          return `<line x1="${line.x1}" y1="${line.y1}" x2="${line.x2}" y2="${line.y2}" stroke="#00ff00" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="${line.x2 + px}" y1="${line.y2 + py}" x2="${line.x2 - px}" y2="${line.y2 - py}" stroke="#00ff00" stroke-width="2.5" stroke-linecap="round"/>`;
+        } else if (line.type === 'motion') {
+          return `<path d="M ${line.x1} ${line.y1} Q ${(line.x1 + line.x2) / 2} ${line.y1 - 15} ${line.x2} ${line.y2}" stroke="#cc00ff" stroke-width="2.5" fill="none" stroke-dasharray="3,3" stroke-linecap="round"/>
+            <polygon points="${line.x2},${line.y2} ${line.x2 - 8},${line.y2 - 5} ${line.x2 - 5},${line.y2 - 8}" fill="#cc00ff"/>`;
+        }
+      }).join('');
+
+      svg.innerHTML = `
+        <!-- Sidelines -->
+        <line x1="20" y1="20" x2="20" y2="280" stroke="white" stroke-width="2"/>
+        <line x1="500" y1="20" x2="500" y2="280" stroke="white" stroke-width="2"/>
+        <!-- Goal lines -->
+        <line x1="60" y1="20" x2="60" y2="280" stroke="white" stroke-width="3"/>
+        <line x1="460" y1="20" x2="460" y2="280" stroke="white" stroke-width="3"/>
+        <!-- 50-yard line -->
+        <line x1="260" y1="20" x2="260" y2="280" stroke="white" stroke-width="3"/>
+        <!-- Yard lines (10 yard increments) -->
+        <line x1="100" y1="20" x2="100" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="140" y1="20" x2="140" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="180" y1="20" x2="180" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="220" y1="20" x2="220" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="300" y1="20" x2="300" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="340" y1="20" x2="340" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="380" y1="20" x2="380" y2="280" stroke="white" stroke-width="1"/>
+        <line x1="420" y1="20" x2="420" y2="280" stroke="white" stroke-width="1"/>
+        <!-- Hash marks (every 10 yards) -->
+        <line x1="60" y1="145" x2="100" y2="145" stroke="white" stroke-width="1"/>
+        <line x1="140" y1="145" x2="180" y2="145" stroke="white" stroke-width="1"/>
+        <line x1="220" y1="145" x2="260" y2="145" stroke="white" stroke-width="1"/>
+        <line x1="260" y1="145" x2="300" y2="145" stroke="white" stroke-width="1"/>
+        <line x1="340" y1="145" x2="380" y2="145" stroke="white" stroke-width="1"/>
+        <line x1="420" y1="145" x2="460" y2="145" stroke="white" stroke-width="1"/>
+        <!-- End zones -->
+        <rect x="20" y="20" width="40" height="260" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2,2" opacity="0.3"/>
+        <rect x="460" y="20" width="40" height="260" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2,2" opacity="0.3"/>
+        ${drawnLines}
+        ${offenseCircles}
+        ${defenseCircles}
+      `;
+
+      // Re-attach event listeners
+      svg.addEventListener('mousedown', handleFieldMouseDown);
+      svg.addEventListener('mousemove', handleFieldMouseMove);
+      svg.addEventListener('mouseup', handleFieldMouseUp);
+      svg.querySelectorAll('.player-circle').forEach(el => {
+        el.addEventListener('mousedown', handleFieldMouseDown);
+      });
+    }
+
+    let dragging = null;
+
+    function handleFieldMouseDown(e) {
+      if (drawMode && (e.target.tagName === 'svg' || e.target.tagName === 'line' || e.target.tagName === 'rect' || e.target.tagName === 'path')) {
+        // Drawing mode
+        const svg = document.getElementById('fieldEditor');
+        const rect = svg.getBoundingClientRect();
+        startPoint = {
+          x: (e.clientX - rect.left) / rect.width * 520,
+          y: (e.clientY - rect.top) / rect.height * 300
+        };
+        isDrawing = true;
+      } else if (e.target.classList.contains('player-circle')) {
+        // Dragging player
+        dragging = {
+          element: e.target,
+          type: e.target.dataset.type,
+          index: parseInt(e.target.dataset.index),
+          startX: e.clientX,
+          startY: e.clientY,
+          initialX: parseFloat(e.target.cx.baseVal.value),
+          initialY: parseFloat(e.target.cy.baseVal.value)
+        };
+      }
+    }
+
+    function handleFieldMouseMove(e) {
+      if (isDrawing && startPoint) {
+        // Preview line while drawing - this is handled by re-rendering with temp line
+        return;
+      }
+      if (!dragging) return;
+      const svg = document.getElementById('fieldEditor');
+      const rect = svg.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width * 520;
+      const y = (e.clientY - rect.top) / rect.height * 300;
+      
+      if (dragging.type === 'offense') {
+        currentPlayDiagram.offense[dragging.index].x = Math.max(40, Math.min(480, x));
+        currentPlayDiagram.offense[dragging.index].y = Math.max(30, Math.min(270, y));
+      } else {
+        currentPlayDiagram.defense[dragging.index].x = Math.max(40, Math.min(480, x));
+        currentPlayDiagram.defense[dragging.index].y = Math.max(30, Math.min(270, y));
+      }
+      renderField();
+    }
+
+    function handleFieldMouseUp(e) {
+      if (isDrawing && startPoint && drawMode) {
+        const svg = document.getElementById('fieldEditor');
+        const rect = svg.getBoundingClientRect();
+        const endPoint = {
+          x: (e.clientX - rect.left) / rect.width * 520,
+          y: (e.clientY - rect.top) / rect.height * 300
+        };
+        
+        // Only add line if it has some length
+        const distance = Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2));
+        if (distance > 10) {
+          currentPlayDiagram.lines = currentPlayDiagram.lines || [];
+          currentPlayDiagram.lines.push({
+            type: drawMode,
+            x1: startPoint.x,
+            y1: startPoint.y,
+            x2: endPoint.x,
+            y2: endPoint.y
+          });
+        }
+        renderField();
+      }
+      isDrawing = false;
+      startPoint = null;
+      dragging = null;
+    }
+
+    function saveNewPlay() {
+      const name = document.getElementById('playName').value.trim();
+      if (!name) return alert('Enter a play name');
+
+      appData.teams[activeTeam].playbook.push({
+        id: Date.now().toString(),
+        name,
+        category: document.getElementById('playCategory').value,
+        formation: document.getElementById('playForm').value,
+        description: document.getElementById('playDesc').value,
+        diagram: JSON.parse(JSON.stringify(currentPlayDiagram))
+      });
+      saveData();
+      document.getElementById('playName').value = '';
+      document.getElementById('playDesc').value = '';
+      document.getElementById('playCategory').value = 'Offensive';
+      resetTemplate();
+      renderPlaybookList();
+      renderPlaybookSidebar();
+      alert('Play saved!');
     }
 
     function renderPlaybookList() {
       const team = appData.teams[activeTeam];
-      let html = '<h3>Plays</h3>';
+      let html = '<h2>Your Plays</h2>';
       if (team.playbook.length === 0) {
         html += '<div class="empty-state">No plays yet</div>';
       } else {
+        html += '<div style="display: grid; gap: 8px;">';
         team.playbook.forEach(p => {
-          html += `<div class="card">
+          const offenseCircles = (p.diagram?.offense || []).map(pos => `<circle cx="${pos.x}" cy="${pos.y}" r="7" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>`).join('');
+          const defenseCircles = (p.diagram?.defense || []).map(pos => `<circle cx="${pos.x}" cy="${pos.y}" r="7" fill="none" stroke="#ff6b6b" stroke-width="1.5"/>`).join('');
+          
+          const drawnLines = (p.diagram?.lines || []).map(line => {
+            if (line.type === 'route') {
+              return `<line x1="${line.x1}" y1="${line.y1}" x2="${line.x2}" y2="${line.y2}" stroke="#ffcc00" stroke-width="1.5" stroke-linecap="round"/>
+                <polygon points="${line.x2},${line.y2} ${line.x2 - 5},${line.y2 - 3} ${line.x2 - 3},${line.y2 - 5}" fill="#ffcc00"/>`;
+            } else if (line.type === 'block') {
+              // T-shape
+              const dx = line.x2 - line.x1;
+              const dy = line.y2 - line.y1;
+              const len = Math.sqrt(dx * dx + dy * dy);
+              const ux = dx / len;
+              const uy = dy / len;
+              const px = -uy * 6;
+              const py = ux * 6;
+              return `<line x1="${line.x1}" y1="${line.y1}" x2="${line.x2}" y2="${line.y2}" stroke="#00ff00" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="${line.x2 + px}" y1="${line.y2 + py}" x2="${line.x2 - px}" y2="${line.y2 - py}" stroke="#00ff00" stroke-width="1.5" stroke-linecap="round"/>`;
+            } else if (line.type === 'motion') {
+              return `<path d="M ${line.x1} ${line.y1} Q ${(line.x1 + line.x2) / 2} ${line.y1 - 10} ${line.x2} ${line.y2}" stroke="#cc00ff" stroke-width="1.5" fill="none" stroke-dasharray="2,2" stroke-linecap="round"/>
+                <polygon points="${line.x2},${line.y2} ${line.x2 - 5},${line.y2 - 3} ${line.x2 - 3},${line.y2 - 5}" fill="#cc00ff"/>`;
+            }
+          }).join('');
+          
+          html += `<div class="card" style="border-left: 4px solid #0066cc;">
             <div style="font-weight: 600; font-size: 15px;">${p.name}</div>
-            <div style="font-size: 12px; color: #999; margin-bottom: 6px;">${p.formation}</div>
-            ${p.description ? `<div style="font-size: 13px; color: #666;">${p.description}</div>` : ''}
-            <button class="btn-danger" onclick="removePlay('${p.id}')" style="margin-top: 8px;">Delete</button>
+            <div style="font-size: 12px; color: #999; margin-bottom: 6px;">${p.category || 'Offensive'} • ${p.formation}</div>
+            ${p.description ? `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">${p.description}</div>` : ''}
+            <div class="play-diagram">
+              <svg width="100%" height="180" viewBox="0 0 520 300" style="background: #1a4d2e; border: 2px solid #fff; border-radius: 4px;">
+                <!-- Goal lines -->
+                <line x1="60" y1="20" x2="60" y2="280" stroke="white" stroke-width="2"/>
+                <line x1="460" y1="20" x2="460" y2="280" stroke="white" stroke-width="2"/>
+                <!-- 50-yard line -->
+                <line x1="260" y1="20" x2="260" y2="280" stroke="white" stroke-width="2"/>
+                <!-- Yard lines -->
+                <line x1="100" y1="20" x2="100" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="140" y1="20" x2="140" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="180" y1="20" x2="180" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="220" y1="20" x2="220" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="300" y1="20" x2="300" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="340" y1="20" x2="340" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="380" y1="20" x2="380" y2="280" stroke="white" stroke-width="0.5"/>
+                <line x1="420" y1="20" x2="420" y2="280" stroke="white" stroke-width="0.5"/>
+                <!-- Sidelines -->
+                <line x1="20" y1="20" x2="20" y2="280" stroke="white" stroke-width="1.5"/>
+                <line x1="500" y1="20" x2="500" y2="280" stroke="white" stroke-width="1.5"/>
+                <!-- Hash marks -->
+                <line x1="60" y1="145" x2="100" y2="145" stroke="white" stroke-width="0.5"/>
+                <line x1="140" y1="145" x2="180" y2="145" stroke="white" stroke-width="0.5"/>
+                <line x1="220" y1="145" x2="260" y2="145" stroke="white" stroke-width="0.5"/>
+                <line x1="260" y1="145" x2="300" y2="145" stroke="white" stroke-width="0.5"/>
+                <line x1="340" y1="145" x2="380" y2="145" stroke="white" stroke-width="0.5"/>
+                <line x1="420" y1="145" x2="460" y2="145" stroke="white" stroke-width="0.5"/>
+                ${drawnLines}
+                ${offenseCircles}
+                ${defenseCircles}
+              </svg>
+            </div>
+            <button class="btn-danger btn-small" onclick="removePlay('${p.id}')" style="margin-top: 8px;">Delete</button>
           </div>`;
         });
+        html += '</div>';
       }
-      document.getElementById('playbookList').innerHTML = html;
+      const playbookElement = document.getElementById('playbookList');
+      if (playbookElement) {
+        playbookElement.innerHTML = html;
+      }
     }
 
-    function removePlay(id) {
-      appData.teams[activeTeam].playbook = appData.teams[activeTeam].playbook.filter(p => p.id !== id);
-      saveData();
-      renderPlaybookList();
-    }
+    function renderPlaybookSidebar() {
+      const team = appData.teams[activeTeam];
+      const sidebar = document.getElementById('playbookSidebar');
+      if (!sidebar) return;
 
-    function renderFormations() {
-      const formations = [
-        { name: 'Wing-T', desc: 'Classic formation with strong misdirection capability' },
-        { name: 'Pistol Spread', desc: 'QB in pistol stance, flexible split receivers' },
-        { name: 'Single Wing', desc: 'Unbalanced look with pulling blockers' },
-        { name: 'I-Formation', desc: 'Power running formation with two RBs inline' },
-        { name: 'Shotgun', desc: 'QB at distance for quick decisions' },
-        { name: 'Spread', desc: 'Multiple receiver sets, pace-oriented' }
-      ];
-
-      let html = `<h2>Formation Reference</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">`;
-
-      formations.forEach(f => {
-        html += `<div class="card">
-          <h3>${f.name}</h3>
-          <p style="margin: 0; font-size: 13px; color: #666; line-height: 1.6;">${f.desc}</p>
-        </div>`;
+      // Group plays by category
+      const categories = {};
+      team.playbook.forEach(p => {
+        const cat = p.category || 'Other';
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(p);
       });
 
-      html += `</div>`;
-      document.getElementById('formations').innerHTML = html;
+      let html = '';
+      if (team.playbook.length === 0) {
+        html = '<div style="color: #999; font-size: 12px; padding: 12px; text-align: center;">No plays yet</div>';
+      } else {
+        Object.keys(categories).sort().forEach(cat => {
+          html += `<div style="margin-bottom: 12px;">
+            <div style="font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 6px;">${cat}</div>
+            <div style="display: grid; gap: 4px;">`;
+          categories[cat].forEach(p => {
+            html += `<div style="padding: 8px; background: #f9f9f9; border-radius: 4px; font-size: 12px; cursor: pointer; border-left: 2px solid #0066cc; hover-bg: #f0f0f0;" title="${p.description || ''}">
+              <div style="font-weight: 500;">${p.name}</div>
+              <div style="font-size: 10px; color: #999;">${p.formation}</div>
+            </div>`;
+          });
+          html += `</div></div>`;
+        });
+      }
+
+      sidebar.innerHTML = html;
+    }
+      appData.teams[activeTeam].playbook = appData.teams[activeTeam].playbook.filter(p => p.id !== id);
+      saveData();
+      renderPlaybook();
     }
 
     function renderGameDay() {
-      document.getElementById('gameday').innerHTML = `<h2>Game Day Tracker</h2><p style="color: #999;">Game day tracker coming soon.  Add players to your roster first!</p>`;
+      const team = appData.teams[activeTeam];
+      let html = `<h2>Game Day Tracker</h2>`;
+
+      if (!currentGame) {
+        html += `<div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+          <h3 style="margin-top: 0; color: white;">Start New Game</h3>
+          <div class="form-group">
+            <input type="text" id="gameTitle" class="input" placeholder="Opponent name" style="margin-bottom: 8px;">
+            <input type="date" id="gameDate" class="input" value="${new Date().toISOString().split('T')[0]}" style="margin-bottom: 8px;">
+            <button class="btn btn-success" onclick="startGame()" style="width: 100%;">Start Game</button>
+          </div>
+        </div>`;
+
+        if (team.games.length > 0) {
+          html += '<h3 style="margin-top: 24px;">Game History</h3>';
+          html += '<div style="display: grid; gap: 8px;">';
+          team.games.forEach(g => {
+            const totalSubs = (g.subs || []).length;
+            html += `<div class="card">
+              <div style="font-weight: 600;">${g.title}</div>
+              <div style="font-size: 12px; color: #999;">${g.date}  •  ${totalSubs} substitutions  •  Final: ${g.finalScore || '—'}</div>
+            </div>`;
+          });
+          html += '</div>';
+        }
+      } else {
+        // In-game view
+        html += `<div class="game-banner">
+          <div class="game-score">
+            <div>
+              <div style="font-size: 14px; opacity: 0.9;">SCORE</div>
+              <div class="score-board">${currentGame.score || 0}</div>
+            </div>
+            <div class="quarter-info">${currentGame.quarter || 'Q1'}</div>
+            <div style="text-align: left;">
+              <div style="font-size: 14px; opacity: 0.9;">vs.</div>
+              <div class="score-board" style="font-size: 24px;">${currentGame.title}</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-top: 12px;">
+            <button class="btn btn-secondary btn-small" onclick="updateScore(7)">+7</button>
+            <button class="btn btn-secondary btn-small" onclick="updateScore(6)">+6</button>
+            <button class="btn btn-secondary btn-small" onclick="nextQuarter()">Next Q</button>
+            <button class="btn btn-danger" onclick="endGame()">End Game</button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Log Substitution</h3>
+            <select id="playerIn" class="input" style="margin-bottom: 8px;">
+              <option value="">Player IN...</option>
+              ${team.players.map(p => `<option value="${p.id}">#${p.number}  ${p.name}</option>`).join('')}
+            </select>
+            <select id="playerOut" class="input" style="margin-bottom: 8px;">
+              <option value="">Player OUT...</option>
+              ${team.players.map(p => `<option value="${p.id}">#${p.number}  ${p.name}</option>`).join('')}
+            </select>
+            <button class="btn btn-success" onclick="logSub()" style="width: 100%;">Log Sub</button>
+          </div>
+
+          <div class="card">
+            <h3>Players On Field</h3>
+            <div id="onField" style="display: grid; gap: 6px; max-height: 300px; overflow-y: auto;"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Substitution Log</h3>
+          <div id="subLog"></div>
+        </div>`;
+      }
+
+      document.getElementById('gameday').innerHTML = html;
+      if (currentGame) {
+        updateGameDisplay();
+      }
+    }
+
+    function startGame() {
+      const title = document.getElementById('gameTitle').value.trim();
+      const date = document.getElementById('gameDate').value;
+      if (title) {
+        currentGame = { 
+          id: Date.now().toString(), 
+          title, 
+          date,
+          quarter: 'Q1',
+          score: 0,
+          subs: [],
+          onField: []
+        };
+        renderGameDay();
+      }
+    }
+
+    function updateScore(points) {
+      if (currentGame) {
+        currentGame.score = (currentGame.score || 0) + points;
+        updateGameDisplay();
+      }
+    }
+
+    function nextQuarter() {
+      if (currentGame) {
+        const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+        const currentIndex = quarters.indexOf(currentGame.quarter);
+        if (currentIndex < 3) {
+          currentGame.quarter = quarters[currentIndex + 1];
+          updateGameDisplay();
+        }
+      }
+    }
+
+    function logSub() {
+      const inId = document.getElementById('playerIn').value;
+      const outId = document.getElementById('playerOut').value;
+      if (inId && outId && currentGame) {
+        const team = appData.teams[activeTeam];
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        currentGame.subs.push({ in: inId, out: outId, time, quarter: currentGame.quarter });
+        
+        currentGame.onField = currentGame.onField.filter(id => id !== outId);
+        if (!currentGame.onField.includes(inId)) {
+          currentGame.onField.push(inId);
+        }
+        
+        renderGameDay();
+      }
+    }
+
+    function updateGameDisplay() {
+      const team = appData.teams[activeTeam];
+      
+      let onFieldHtml = '';
+      if (currentGame.onField.length === 0) {
+        onFieldHtml = '<div style="color: #999; font-size: 12px;">Log substitutions to track who is on field</div>';
+      } else {
+        currentGame.onField.forEach(id => {
+          const player = team.players.find(p => p.id === id);
+          if (player) {
+            onFieldHtml += `<div class="player-chip" style="background: #4caf50; color: white;">#${player.number}  ${player.name}</div>`;
+          }
+        });
+      }
+      document.getElementById('onField').innerHTML = onFieldHtml;
+
+      let subLogHtml = '';
+      if (currentGame.subs.length === 0) {
+        subLogHtml = '<div style="color: #999;">No substitutions yet</div>';
+      } else {
+        currentGame.subs.slice().reverse().forEach(s => {
+          const inPlayer = team.players.find(p => p.id === s.in);
+          const outPlayer = team.players.find(p => p.id === s.out);
+          subLogHtml += `<div class="sub-history">
+            <div class="sub-time">${s.time}  •  ${s.quarter}</div>
+            <div class="sub-change">
+              <span class="sub-out">${outPlayer?.name} #${outPlayer?.number}</span>
+              <span style="color: #999;">→</span>
+              <span class="sub-in">#${inPlayer?.number}  ${inPlayer?.name}</span>
+            </div>
+          </div>`;
+        });
+      }
+      document.getElementById('subLog').innerHTML = subLogHtml;
+    }
+
+    function endGame() {
+      if (currentGame) {
+        currentGame.finalScore = `${currentGame.score}–0`;
+        appData.teams[activeTeam].games.push(currentGame);
+        saveData();
+        currentGame = null;
+        renderGameDay();
+      }
     }
 
     init();
